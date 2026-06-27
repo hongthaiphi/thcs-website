@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Chuyển Động & Lực</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1c1008;
+  font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+  padding: 24px 16px;
+  color: #111;
+}
+
+.comic-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── COVER ── */
+.cover {
+  background: #0d0d2b;
+  border: 5px solid #ffd700;
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(255,215,0,.04) 8px, rgba(255,215,0,.04) 16px
+  );
+  pointer-events: none;
+}
+.cover-series {
+  font-family: 'Bangers', 'Impact', sans-serif;
+  color: #ffd700;
+  letter-spacing: 6px;
+  font-size: 1em;
+  margin-bottom: 6px;
+}
+.cover-title {
+  font-family: 'Bangers', 'Impact', sans-serif;
+  color: #fff;
+  font-size: 4em;
+  line-height: .95;
+  text-shadow: 4px 4px 0 #c0392b, 8px 8px 0 #7b241c;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.cover-sub {
+  color: #85c1e9;
+  font-weight: 700;
+  font-size: 1.05em;
+  letter-spacing: 1px;
+}
+
+/* ── CHAPTER DIVIDER ── */
+.ch-div {
+  background: #0d0d2b;
+  color: #ffd700;
+  font-family: 'Bangers', sans-serif;
+  font-size: 1.3em;
+  letter-spacing: 4px;
+  text-align: center;
+  padding: 10px 16px;
+  margin: 4px 0;
+}
+
+/* ── PANEL ROW ── */
+.row {
+  display: flex;
+  gap: 4px;
+}
+
+/* ── PANEL ── */
+.panel {
+  border: 3px solid #111;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+.panel-2x { flex: 2; }
+.panel-1h { flex: 1.4; }
+.panel-07 { flex: .75; }
+
+.bg-dark  { background: #0d0d2b; color: #fff; }
+.bg-yellow{ background: #fef9e7; }
+.bg-blue  { background: #ebf5fb; }
+.bg-red   { background: #fdedec; }
+
+/* ── PANEL INNER ── */
+.pi {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 180px;
+  height: 100%;
+}
+.pi-tall { min-height: 260px; }
+.pi-short { min-height: 130px; }
+
+/* ── NARRATION BOX ── */
+.nar {
+  background: #ffd700;
+  border: 2px solid #111;
+  padding: 4px 8px;
+  font-size: .78em;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.nar-blue  { background: #aed6f1; }
+.nar-red   { background: #f1948a; color: #fff; }
+.nar-dark  { background: #111; color: #ffd700; }
+.nar-green { background: #a9dfbf; }
+.nar-purple{ background: #d2b4de; }
+
+/* ── SCENE (the "artwork" area) ── */
+.scene {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.scene-col { flex-direction: column; }
+
+/* ── FIGURES ── */
+.fig    { font-size: 3em;   line-height: 1; display: block; }
+.fig-lg { font-size: 4.5em; line-height: 1; display: block; }
+.fig-sm { font-size: 2em;   line-height: 1; display: block; }
+
+/* ── SPEECH BUBBLE ── */
+.bubble {
+  background: #fff;
+  border: 2.5px solid #111;
+  border-radius: 18px;
+  padding: 7px 11px;
+  font-weight: 700;
+  font-size: .82em;
+  line-height: 1.35;
+  position: relative;
+  max-width: 95%;
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 18px;
+  border: 13px solid transparent;
+  border-top-color: #111;
+  border-bottom: 0;
+}
+.bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 21px;
+  border: 10px solid transparent;
+  border-top-color: #fff;
+  border-bottom: 0;
+  z-index: 1;
+}
+.bubble-right::after { left: auto; right: 18px; }
+.bubble-right::before{ left: auto; right: 21px; }
+.bubble-top::after  { bottom: auto; top: -13px; left: 18px; border-top: 0; border-bottom-color: #111; }
+.bubble-top::before { bottom: auto; top: -9px;  left: 21px; border-top: 0; border-bottom-color: #fff; z-index: 1; }
+
+.bubble-dark {
+  background: #0d0d2b;
+  color: #ffd700;
+  border-color: #ffd700;
+}
+.bubble-dark::after  { border-top-color: #ffd700; }
+.bubble-dark::before { border-top-color: #0d0d2b; }
+
+/* ── THOUGHT BUBBLE ── */
+.thought {
+  background: #eaf4fb;
+  border: 2.5px solid #111;
+  border-radius: 50%;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: .82em;
+  line-height: 1.4;
+  text-align: center;
+  position: relative;
+}
+.thought::after {
+  content: '•••';
+  position: absolute;
+  bottom: -18px;
+  left: 20px;
+  font-size: .9em;
+  color: #111;
+  letter-spacing: 2px;
+}
+
+/* ── FORMULA ── */
+.formula {
+  background: #eaf5fb;
+  border: 2px solid #2980b9;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 1.1em;
+  font-weight: 700;
+  text-align: center;
+  color: #1a5276;
+  flex-shrink: 0;
+}
+.formula-red  { background: #fdedec; border-color: #c0392b; color: #7b241c; }
+.formula-green{ background: #e9f7ef; border-color: #1e8449; color: #145a32; }
+
+/* ── SFX ── */
+.sfx {
+  font-family: 'Bangers', 'Impact', sans-serif;
+  font-size: 2.2em;
+  color: #c0392b;
+  text-shadow: 2px 2px 0 #111;
+  transform: rotate(-4deg);
+  display: inline-block;
+  letter-spacing: 2px;
+}
+.sfx-y  { color: #f39c12; }
+.sfx-b  { color: #2980b9; }
+.sfx-sm { font-size: 1.4em; }
+.sfx-lg { font-size: 3.2em; }
+
+/* ── CAPTION ── */
+.cap {
+  background: #111;
+  color: #fff;
+  padding: 5px 9px;
+  font-size: .76em;
+  font-style: italic;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+.cap-light { background: #85929e; }
+
+/* ── SPEED BARS ── */
+.speed-row { display: flex; align-items: center; gap: 8px; font-size: .8em; }
+.speed-bar { flex: 1; height: 14px; background: #ddd; border-radius: 3px; overflow: hidden; }
+.speed-fill { height: 100%; border-radius: 3px; }
+.spd-label { min-width: 95px; text-align: right; font-weight: 700; font-size: .85em; }
+
+/* ── CLOSING ── */
+.closing {
+  background: #0d0d2b;
+  border: 3px solid #111;
+  color: #fff;
+  text-align: center;
+  padding: 28px 20px;
+  margin-top: 4px;
+}
+.closing-title {
+  font-family: 'Bangers', sans-serif;
+  color: #ffd700;
+  font-size: 1.6em;
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+}
+.closing-lines {
+  color: #85c1e9;
+  font-size: .88em;
+  line-height: 2;
+  margin-bottom: 14px;
+}
+.closing-next {
+  font-family: 'Bangers', sans-serif;
+  color: #ffd700;
+  font-size: 1.1em;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- ══════════════════════════════════
+     COVER
+══════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN I ✦</div>
+  <div class="cover-title">CHUYỂN ĐỘNG<br>& LỰC</div>
+  <div class="cover-sub">Ai điều khiển mọi thứ di chuyển?</div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCENE 1: ĐỨNG YÊN SO VỚI CÁI GÌ?
+══════════════════════════════════ -->
+<div class="row">
+
+  <!-- Panel 1: học sinh ngồi yên -->
+  <div class="panel panel-07">
+    <div class="pi">
+      <div class="nar">Câu hỏi mở đầu</div>
+      <div class="scene scene-col">
+        <span class="fig-lg">🪑</span>
+        <div class="bubble">"Tôi đang đứng yên."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 2: Trái Đất từ vũ trụ — wide, dark -->
+  <div class="panel panel-2x bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">Nhìn từ bên ngoài...</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🌍</span>
+        <div style="font-size:.82em; color:#85c1e9; line-height:2; text-align:center;">
+          🔄 Quay quanh trục&emsp;<strong style="color:#ffd700;">1.670 km/h</strong><br>
+          ☀️ Quanh Mặt Trời&emsp;<strong style="color:#ffd700;">107.000 km/h</strong><br>
+          🌌 Trong thiên hà&emsp;<strong style="color:#ffd700;">220.000 km/h</strong>
+        </div>
+      </div>
+      <div class="cap">"Đứng yên" chỉ có nghĩa khi xác định rõ vật mốc.</div>
+    </div>
+  </div>
+
+  <!-- Panel 3: học sinh sốc -->
+  <div class="panel panel-07">
+    <div class="pi">
+      <div class="scene scene-col">
+        <span class="fig-lg">😱</span>
+        <div class="bubble" style="font-size:.78em;">107.000 km/h?!<br>Mà tôi đang... <em>đứng yên</em>?!</div>
+      </div>
+      <div class="nar nar-blue">Chuyển động là tương đối.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCENE 2: VẬN TỐC
+══════════════════════════════════ -->
+<div class="row">
+
+  <!-- Bảng vận tốc -->
+  <div class="panel panel-2x bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Vận tốc — từ người đi bộ đến ánh sáng</div>
+      <div class="scene scene-col" style="gap:6px; align-items:stretch;">
+        <div class="speed-row">
+          <span>🚶</span>
+          <div class="speed-bar"><div class="speed-fill" style="width:1%;background:#3498db;"></div></div>
+          <span class="spd-label">1,4 m/s</span>
+        </div>
+        <div class="speed-row">
+          <span>🚗</span>
+          <div class="speed-bar"><div class="speed-fill" style="width:5%;background:#27ae60;"></div></div>
+          <span class="spd-label">16,7 m/s</span>
+        </div>
+        <div class="speed-row">
+          <span>✈️</span>
+          <div class="speed-bar"><div class="speed-fill" style="width:22%;background:#e67e22;"></div></div>
+          <span class="spd-label">250 m/s</span>
+        </div>
+        <div class="speed-row">
+          <span>🔊</span>
+          <div class="speed-bar"><div class="speed-fill" style="width:40%;background:#e74c3c;"></div></div>
+          <span class="spd-label">340 m/s</span>
+        </div>
+        <div class="speed-row">
+          <span>💡</span>
+          <div class="speed-bar"><div class="speed-fill" style="width:100%;background:linear-gradient(90deg,#f39c12,#ffd700);"></div></div>
+          <span class="spd-label" style="font-size:.72em;">300.000.000 m/s</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Công thức + ghi chú -->
+  <div class="panel">
+    <div class="pi">
+      <div class="nar">Công thức cốt lõi</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div class="formula" style="font-size:1.4em;">v = s / t</div>
+        <div style="font-size:.82em; color:#555; text-align:center; line-height:1.7;">
+          Đồng hồ tốc độ xe hiển thị<br>
+          <strong>vận tốc tức thời</strong><br>
+          — không phải trung bình.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     GALILEO
+══════════════════════════════════ -->
+<div class="ch-div">⚗️ GALILEO GALILEI — 1564–1642 ⚗️</div>
+
+<div class="row">
+
+  <!-- Galileo thí nghiệm -->
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Florence, ~1600 — Mặt phẳng nghiêng</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-lg">🔬</span>
+        <div style="font-size:1.8em; text-align:center;">📐 ↗️ 🔵 🔵 🔵</div>
+        <div style="font-size:.85em; text-align:center; color:#5d4037; line-height:1.6;">
+          Lăn bi xuống mặt phẳng nghiêng.<br>
+          Đồng hồ cơ học chưa đủ chính xác —<br>
+          ông dùng <strong>đồng hồ nước</strong> để đo thời gian.
+        </div>
+        <div class="bubble">"Khoảng cách tỷ lệ với bình phương thời gian!"</div>
+      </div>
+      <div class="cap">Thực nghiệm đo chuyển động đầu tiên trong lịch sử. Không phải suy luận. Đo.</div>
+    </div>
+  </div>
+
+  <!-- Galileo bị quản thúc, lén gửi bản thảo -->
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Bị toà án dị giáo quản thúc tại gia.</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <div style="font-size:2.5em; text-align:center;">🕯️&nbsp;✍️</div>
+        <div style="font-size:.83em; color:#aed6f1; text-align:center; line-height:1.7;">
+          Đêm tối. Ngọn nến leo lắt.<br>
+          Cuộn bản thảo cuối đời.
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.8em;">"Đưa ra Hà Lan... đừng để ai biết."</div>
+        <div style="font-size:2em; text-align:center;">🤫 📦 ➡️ 🇳🇱</div>
+      </div>
+      <div class="cap" style="color:#aed6f1;">Xuất bản tại Leiden năm 1638. Galileo mất năm 1642. Câu đó nói lên con người ông.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     NEWTON — ORIGIN
+══════════════════════════════════ -->
+<div class="ch-div">🍎 ISAAC NEWTON — BA ĐỊNH LUẬT 🍎</div>
+
+<div class="row">
+
+  <!-- Cambridge đóng cửa -->
+  <div class="panel panel-07 bg-red">
+    <div class="pi">
+      <div class="nar nar-red">Cambridge, 1665</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig-lg">🏛️❌</span>
+        <div style="font-weight:900; font-size:1em; color:#c0392b; text-align:center; line-height:1.5;">
+          ĐÓNG CỬA<br>DỊCH HẠCH
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Newton trong vườn -->
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi">
+      <div class="nar">Woolsthorpe — nhà riêng của Newton</div>
+      <div class="scene" style="gap:20px;">
+        <div style="text-align:center;">
+          <span class="fig-lg">🌳🍎</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="thought" style="font-size:.8em;">
+            Lực hấp dẫn...<br>Ánh sáng...<br>Giải tích...<br>Chuyển động...
+          </div>
+          <div style="font-size:.82em; color:#5d4037; line-height:1.7;">
+            Newton — 22 tuổi.<br>
+            Không lớp học. Không thầy.<br>
+            <strong>18 tháng.</strong>
+          </div>
+        </div>
+      </div>
+      <div class="cap">Cả nền tảng cơ học cổ điển ra đời trong một đợt phong toả dịch. Một người.</div>
+    </div>
+  </div>
+
+  <!-- Principia -->
+  <div class="panel panel-07">
+    <div class="pi">
+      <div class="nar">1687 — Principia Mathematica</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig-lg">📚</span>
+        <div style="font-size:.8em; color:#555; text-align:center; line-height:1.6;">
+          Cuốn sách ảnh hưởng nhất lịch sử khoa học.
+        </div>
+        <div class="sfx sfx-y sfx-sm" style="transform:rotate(-3deg);">3 ĐỊNH LUẬT!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── ĐỊNH LUẬT 1 ── -->
+<div class="row">
+
+  <div class="panel panel-07">
+    <div class="pi">
+      <div class="nar nar-blue" style="text-align:center;">ĐỊNH LUẬT 1</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula formula-red" style="font-size:.95em;">QUÁN TÍNH</div>
+        <div style="font-size:.78em; color:#555; line-height:1.5; text-align:center;">
+          Vật giữ nguyên trạng thái nếu không có lực nào tác dụng.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="scene" style="gap:8px; align-items:center;">
+        <div style="text-align:center;">
+          <span class="fig">🚗💨</span>
+          <div style="font-size:.8em; margin-top:4px;">Xe phanh gấp</div>
+        </div>
+        <div>
+          <div class="sfx sfx-sm" style="transform:rotate(-8deg); display:block;">SCREECH!</div>
+        </div>
+        <div style="text-align:center;">
+          <span class="fig">🧍➡️💥</span>
+          <div style="font-size:.8em; margin-top:4px;">Người tiếp tục lao về trước</div>
+        </div>
+      </div>
+      <div class="cap">Cơ thể muốn giữ vận tốc cũ. Dây an toàn tạo lực ngược để dừng cùng xe.</div>
+    </div>
+  </div>
+
+  <div class="panel panel-07 bg-blue">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig">🪢</span>
+        <div style="font-size:.8em; text-align:center; line-height:1.5; color:#1a5276;">
+          Không thắt dây an toàn:<br>
+          quán tính đưa đầu vào kính.<br>
+          <strong>Vật lý không tha.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── ĐỊNH LUẬT 2 ── -->
+<div class="row">
+
+  <div class="panel panel-07">
+    <div class="pi">
+      <div class="nar nar-green" style="text-align:center;">ĐỊNH LUẬT 2</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula" style="font-size:1.3em;">F = m·a</div>
+        <div style="font-size:.78em; color:#555; text-align:center; line-height:1.5;">
+          Gia tốc tỷ lệ thuận lực,<br>nghịch khối lượng.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi">
+      <div class="nar">Cùng lực F — khối lượng m khác nhau</div>
+      <div class="scene" style="gap:20px; justify-content:center;">
+        <div style="text-align:center;">
+          <span class="fig">🚗</span>
+          <div style="font-size:.8em; margin:6px 0;">Xe trống</div>
+          <div style="font-size:1.6em; color:#27ae60;">➡️➡️➡️</div>
+          <div style="font-size:.78em; color:#27ae60; font-weight:700;">Nhanh</div>
+        </div>
+        <div style="font-size:1.6em; font-weight:900; color:#888;">VS</div>
+        <div style="text-align:center;">
+          <span class="fig">🚌</span>
+          <div style="font-size:.8em; margin:6px 0;">Xe đầy người</div>
+          <div style="font-size:1.6em; color:#e67e22;">➡️</div>
+          <div style="font-size:.78em; color:#e67e22; font-weight:700;">Chậm</div>
+        </div>
+      </div>
+      <div class="cap">Va chạm 100 km/h không gấp đôi nguy hiểm 50 km/h — gấp bốn. Động năng ∝ v².</div>
+    </div>
+  </div>
+
+  <div class="panel panel-07">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula formula-green" style="font-size:.9em;">a = F / m</div>
+        <div style="font-size:.78em; color:#555; text-align:center; line-height:1.5;">
+          Giảm 50 km/h → 40 km/h<br>không "giảm tí chút" —<br><strong>giảm gần nửa động năng.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── ĐỊNH LUẬT 3 ── -->
+<div class="row">
+
+  <div class="panel panel-07">
+    <div class="pi">
+      <div class="nar nar-purple" style="text-align:center;">ĐỊNH LUẬT 3</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula" style="font-size:.9em; border-color:#9b59b6; color:#6c3483;">PHẢN LỰC</div>
+        <div style="font-size:.78em; color:#555; text-align:center; line-height:1.5;">
+          Mọi lực đều có phản lực bằng độ lớn, ngược chiều.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="pi">
+      <div class="nar">Đi bộ — phản lực từ mặt đất</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🚶</span>
+        <div style="font-size:.85em; text-align:center; line-height:2;">
+          Chân đẩy mặt đất <strong>ra sau</strong> ←<br>
+          <span style="font-size:1.3em;">↕️</span><br>
+          Đất đẩy chân <strong>về trước</strong> →
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">Tên lửa — không cần mặt đất</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🚀</span>
+        <div style="font-size:.82em; text-align:center; color:#aed6f1; line-height:1.8;">
+          Khí phụt <strong style="color:#ffd700;">xuống</strong> ↓<br>
+          Tên lửa bay <strong style="color:#ffd700;">lên</strong> ↑
+        </div>
+        <div class="sfx sfx-y" style="font-size:1.8em; transform:rotate(-6deg);">WHOOSH!</div>
+      </div>
+      <div class="cap" style="color:#85c1e9;">Hoạt động trong chân không. Không cần gì để đẩy vào.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     LEONARDO DA VINCI — MA SÁT
+══════════════════════════════════ -->
+<div class="ch-div">📓 LEONARDO DA VINCI — BÍ MẬT 200 NĂM 📓</div>
+
+<div class="row">
+
+  <!-- Leonardo ghi chép -->
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Florence, 1493 — Sổ tay bí mật</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-lg">✍️🎨</span>
+        <div style="font-size:.85em; text-align:center; color:#5d4037; line-height:1.7;">
+          Leonardo da Vinci nghiên cứu ma sát có hệ thống.<br>
+          Ông phát hiện: lực ma sát tỷ lệ áp lực, không<br>phụ thuộc diện tích bề mặt tiếp xúc.
+        </div>
+        <div class="bubble">"Ghi xong. Để mai nghiên cứu tiếp..."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ngăn kéo đóng lại -->
+  <div class="panel">
+    <div class="pi pi-tall">
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-lg">📓</span>
+        <div style="font-size:.85em; text-align:center; color:#777; line-height:2;">
+          Sổ tay đóng lại.<br>
+          Ngăn kéo đóng lại.<br>
+          Chưa bao giờ xuất bản.
+        </div>
+        <div style="font-size:3em; text-align:center; color:#aaa;">⏳</div>
+      </div>
+      <div class="cap">Thiên tài không chia sẻ công trình = thiên tài chưa tồn tại với thế giới.</div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <!-- 200 năm sau -->
+  <div class="panel bg-dark">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="sfx sfx-y sfx-lg" style="transform:rotate(-3deg);">200 NĂM SAU...</div>
+        <div style="font-size:.82em; color:#aed6f1; text-align:center; line-height:1.7;">
+          Guillaume Amontons — 1699<br>
+          Charles-Augustin de Coulomb — 1781
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hai người "phát minh lại" -->
+  <div class="panel panel-2x bg-blue">
+    <div class="pi">
+      <div class="scene" style="gap:16px; flex-wrap:wrap; align-items:flex-start;">
+        <div style="text-align:center; flex:1;">
+          <span class="fig">🧑‍🔬</span>
+          <div class="bubble" style="font-size:.78em; margin-top:8px;">"Tôi vừa phát minh<br>ra định luật ma sát!"</div>
+        </div>
+        <div style="text-align:center; flex:1;">
+          <span class="fig">🧑‍🔬</span>
+          <div class="bubble" style="font-size:.78em; margin-top:8px;">"Tôi cũng vậy.<br>Hoàn toàn độc lập!"</div>
+        </div>
+      </div>
+      <div class="cap">Những thứ Leonardo đã viết từ 1493. Cái giá của thiên tài không chia sẻ công trình.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     HOOKE vs NEWTON
+══════════════════════════════════ -->
+<div class="ch-div">⚙️ ROBERT HOOKE vs ISAAC NEWTON — KẺ THÙ KHÔNG ĐỘI TRỜI CHUNG ⚙️</div>
+
+<div class="row">
+
+  <!-- Định luật Hooke -->
+  <div class="panel">
+    <div class="pi">
+      <div class="nar nar-red">Định luật Hooke</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig">🧑‍🔬🌀</span>
+        <div class="formula formula-red">F = k · Δl</div>
+        <div style="font-size:.8em; text-align:center; color:#555; line-height:1.5;">
+          Lực đàn hồi tỷ lệ với<br>độ biến dạng trong giới hạn đàn hồi.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hai người tranh cãi -->
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="nar">Hai thiên tài. Một Hội Hoàng gia. Không đủ chỗ.</div>
+      <div class="scene" style="gap:10px; flex-wrap:wrap; align-items:flex-start;">
+        <div style="flex:1; text-align:center;">
+          <span class="fig">😠🧑‍🔬</span>
+          <div style="font-size:.78em; margin-top:4px; color:#c0392b;">HOOKE</div>
+          <div class="bubble bubble-top" style="font-size:.75em; margin-top:12px;">"Tôi phát minh trọng lực trước ông!"</div>
+        </div>
+        <div style="font-size:2.5em; font-weight:900; color:#e74c3c; align-self:center;">⚔️</div>
+        <div style="flex:1; text-align:center;">
+          <span class="fig">🧑‍🔬😤</span>
+          <div style="font-size:.78em; margin-top:4px; color:#2980b9;">NEWTON</div>
+          <div class="bubble bubble-top bubble-right" style="font-size:.75em; margin-top:12px;">"Bằng chứng ông đâu?!"</div>
+        </div>
+      </div>
+      <div class="cap">Tranh cãi về ánh sáng, lực hấp dẫn, quyền tác giả — suốt nhiều thập kỷ.</div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <!-- Newton xóa chân dung -->
+  <div class="panel panel-2x bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Sau khi Hooke chết — 1703</div>
+      <div class="scene" style="gap:24px; align-items:center;">
+        <div style="text-align:center;">
+          <div style="font-size:3.5em;">🖼️</div>
+          <div style="font-size:.8em; color:#aed6f1; margin-top:8px;">Chân dung Hooke<br>tại Hội Hoàng gia</div>
+        </div>
+        <div style="font-size:3em;">➡️</div>
+        <div style="text-align:center;">
+          <div style="font-size:3.5em;">🫙&nbsp;❌</div>
+          <div style="font-size:.8em; color:#f1948a; margin-top:8px;">Newton xóa.<br>Biến mất hoàn toàn.</div>
+        </div>
+      </div>
+      <div class="cap" style="color:#f1948a;">Đến hôm nay không ai biết mặt Hooke trông như thế nào. Không một chân dung nào còn tồn tại.</div>
+    </div>
+  </div>
+
+  <!-- Định luật Hooke ứng dụng -->
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Nhưng tên ông vẫn sống</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🌀⬇️</span>
+        <div style="font-size:.82em; text-align:center; color:#5d4037; line-height:1.7;">
+          Lò xo xe hơi.<br>
+          Dây đàn hồi.<br>
+          Cân lò xo.<br>
+          Cấu trúc tòa nhà.<br><br>
+          <strong>Mọi thứ co giãn đều theo định luật Hooke.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CLOSING
+══════════════════════════════════ -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN I —</div>
+  <div class="closing-lines">
+    Galileo đo bằng đồng hồ nước. Ngay trước khi chết, lén gửi bản thảo ra nước ngoài.<br>
+    Newton nghĩ ra cơ học cổ điển trong 18 tháng giãn cách vì dịch hạch, lúc 22 tuổi.<br>
+    Leonardo viết định luật ma sát năm 1493 rồi bỏ vào ngăn kéo 200 năm.<br>
+    Hooke bị xóa khỏi lịch sử bằng một cái tẩy.
+  </div>
+  <div class="closing-next">➤ PHẦN II: ÁP SUẤT VÀ LỰC ĐẨY ARCHIMEDES ➤</div>
+</div>
+
+</div><!-- .comic-wrap -->
+</body>
+</html>

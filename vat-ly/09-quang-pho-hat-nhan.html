@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Quang Phổ & Hạt Nhân</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; font-family: 'Comic Neue','Comic Sans MS',cursive; padding: 24px 16px; color: #111; }
+.comic-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+
+.cover { background: #0a0a0a; border: 5px solid #e74c3c; padding: 32px 24px; text-align: center; position: relative; overflow: hidden; margin-bottom: 4px; }
+.cover::after { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(231,76,60,.05) 8px, rgba(231,76,60,.05) 16px); pointer-events:none; }
+.cover-series { font-family:'Bangers',sans-serif; color:#e74c3c; letter-spacing:6px; font-size:1em; margin-bottom:6px; }
+.cover-title  { font-family:'Bangers',sans-serif; color:#fff; font-size:3.5em; line-height:.9; text-shadow:4px 4px 0 #922b21, 8px 8px 0 #511515; letter-spacing:2px; margin-bottom:10px; }
+.cover-sub    { color:#f1948a; font-weight:700; font-size:1.05em; letter-spacing:1px; }
+
+.ch-div { background:#0a0a0a; color:#e74c3c; font-family:'Bangers',sans-serif; font-size:1.25em; letter-spacing:4px; text-align:center; padding:10px 16px; margin:4px 0; }
+.row { display:flex; gap:4px; }
+.panel { border:3px solid #111; background:#fff; position:relative; overflow:hidden; flex:1; }
+.panel-2x { flex:2; }
+.panel-3x { flex:3; }
+
+.bg-dark   { background:#0a0a0a; color:#fff; }
+.bg-yellow { background:#fef9e7; }
+.bg-blue   { background:#ebf5fb; }
+.bg-red    { background:#fdedec; }
+.bg-orange { background:#fef0e7; }
+.bg-green  { background:#eafaf1; }
+.bg-purple { background:#f5eef8; }
+.bg-gray   { background:#f2f3f4; }
+
+.pi       { padding:12px; display:flex; flex-direction:column; gap:8px; min-height:190px; height:100%; }
+.pi-tall  { min-height:290px; }
+.pi-short { min-height:130px; }
+
+.nar         { background:#ffd700; border:2px solid #111; padding:4px 8px; font-size:.78em; font-weight:700; flex-shrink:0; }
+.nar-red     { background:#f1948a; color:#fff; }
+.nar-blue    { background:#aed6f1; }
+.nar-dark    { background:#111; color:#ffd700; }
+.nar-orange  { background:#fad7a0; }
+.nar-green   { background:#a9dfbf; }
+.nar-purple  { background:#d2b4de; }
+
+.scene     { flex:1; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+.scene-col { flex-direction:column; }
+
+.fig    { font-size:3em;   line-height:1; display:block; }
+.fig-lg { font-size:4.5em; line-height:1; display:block; }
+.fig-xl { font-size:6em;   line-height:1; display:block; }
+
+.bubble { background:#fff; border:2.5px solid #111; border-radius:18px; padding:7px 11px; font-weight:700; font-size:.82em; line-height:1.35; position:relative; max-width:95%; }
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px; left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-dark { background:#0a0a0a; color:#ffd700; border-color:#ffd700; }
+.bubble-dark::after  { border-top-color:#ffd700; }
+.bubble-dark::before { border-top-color:#0a0a0a; }
+.bubble-red { background:#fdedec; border-color:#e74c3c; color:#7b241c; }
+.bubble-red::after  { border-top-color:#e74c3c; }
+.bubble-red::before { border-top-color:#fdedec; }
+
+.thought { background:#eaf4fb; border:2.5px solid #111; border-radius:50%; padding:10px 16px; font-weight:700; font-size:.82em; line-height:1.4; text-align:center; position:relative; }
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+.formula       { background:#fdedec; border:2px solid #e74c3c; border-radius:8px; padding:7px 14px; font-size:1.1em; font-weight:700; text-align:center; color:#7b241c; flex-shrink:0; }
+.formula-blue  { background:#ebf5fb; border-color:#2980b9; color:#1a5276; }
+.formula-gold  { background:#fef9e7; border-color:#d4ac0d; color:#7d6608; font-size:1.4em; }
+
+.sfx    { font-family:'Bangers',sans-serif; font-size:2.2em; color:#e74c3c; text-shadow:2px 2px 0 #111; transform:rotate(-4deg); display:inline-block; letter-spacing:2px; }
+.sfx-y  { color:#f1c40f; }
+.sfx-g  { color:#27ae60; }
+.sfx-lg { font-size:3em; }
+.sfx-sm { font-size:1.4em; }
+
+.cap { background:#111; color:#fff; padding:5px 9px; font-size:.76em; font-style:italic; flex-shrink:0; margin-top:auto; }
+
+/* Radiation warning */
+.rad { display:inline-block; font-size:1.5em; animation: none; }
+
+.closing-full { background:#0a0a0a; border:3px solid #111; color:#fff; text-align:center; padding:36px 20px; margin-top:4px; }
+.closing-title { font-family:'Bangers',sans-serif; color:#e74c3c; font-size:1.8em; letter-spacing:4px; margin-bottom:16px; }
+.closing-series-end { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.3em; letter-spacing:3px; margin-bottom:12px; }
+.closing-lines { color:#f1948a; font-size:.88em; line-height:2; margin-bottom:20px; }
+.closing-quote { color:#aaa; font-size:.88em; font-style:italic; margin-bottom:8px; }
+.closing-attrib { color:#555; font-size:.8em; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN IX ✦</div>
+  <div class="cover-title">QUANG PHỔ<br>& HẠT NHÂN</div>
+  <div class="cover-sub">Tia X, phóng xạ, phân hạch, E = mc²</div>
+</div>
+
+<!-- RÖNTGEN -->
+<div class="ch-div">☢️ WILHELM RÖNTGEN — 1845–1923 ☢️</div>
+<div class="row">
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Würzburg, 1895 — thí nghiệm tình cờ</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">🔬💡</span>
+        <div style="color:#f9e79f; font-size:.83em; text-align:center; line-height:1.7;">
+          Röntgen làm thí nghiệm với ống cathode.<br>
+          Nhận ra: màn hình huỳnh quang<br>ở góc khuất <strong>vẫn phát sáng.</strong>
+        </div>
+        <div class="thought" style="background:#0d0820; border-color:#ffd700; color:#ffd700; font-size:.78em;">
+          Loại tia gì đây?<br>
+          Xuyên qua được bìa cứng...<br>
+          Tạm gọi: tia X.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-blue">
+    <div class="pi pi-tall">
+      <div class="nar nar-blue">Ảnh đầu tiên trong lịch sử y học</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">💍🦴</span>
+        <div style="font-size:.83em; text-align:center; color:#1a5276; line-height:1.7;">
+          Röntgen chụp bàn tay vợ —<br>thấy rõ từng ngón xương<br>và chiếc <strong>nhẫn cưới.</strong>
+        </div>
+        <div class="bubble" style="font-size:.78em;">"Anna... em có muốn nhìn xem bàn tay trông như thế nào bên trong không?"</div>
+      </div>
+      <div class="cap">Vợ ông nhìn vào ảnh bàn tay mình: "Tôi đã nhìn thấy cái chết của mình."</div>
+    </div>
+  </div>
+
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Phản ứng xã hội — và quyết định của Röntgen</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">📰👗</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Báo chí châu Âu hoảng loạn.<br>
+          Một số công ty bán<br><em>"quần lót chống tia X"</em>.
+        </div>
+        <div style="background:#fef9e7; border:2px solid #d4ac0d; border-radius:6px; padding:6px; font-size:.8em; font-weight:700; text-align:center; color:#7d6608; line-height:1.5;">
+          Röntgen từ chối đăng ký bằng sáng chế —<br>"muốn công nghệ này phục vụ nhân loại tự do."<br><br>
+          Nhận Nobel Vật lý đầu tiên — 1901.<br>
+          Chết nghèo vì lạm phát sau Thế chiến I.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARIE CURIE -->
+<div class="ch-div">⚗️ MARIE CURIE — 1867–1934 ⚗️</div>
+<div class="row">
+  <div class="panel bg-purple">
+    <div class="pi pi-tall">
+      <div class="nar nar-purple">Hai Nobel — một người phụ nữ</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🏅🏅</span>
+        <div style="font-size:.83em; text-align:center; color:#6c3483; line-height:1.7;">
+          Nobel Vật lý 1903<br>(cùng với Pierre và Becquerel)<br><br>
+          Nobel Hóa học 1911<br>(một mình — radium và polonium)
+        </div>
+        <div style="background:#e8daef; border:2px solid #9b59b6; border-radius:6px; padding:6px; font-size:.8em; font-weight:700; text-align:center; color:#6c3483; line-height:1.5;">
+          Người đầu tiên nhận Nobel hai lần.<br>
+          Người đầu tiên trong hai lĩnh vực khác nhau.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-red">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Viện Hàn lâm Khoa học Pháp — từ chối</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🗳️❌</span>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; line-height:1.7;">
+          Curie ứng cử vào<br>Viện Hàn lâm Khoa học Pháp.
+        </div>
+        <div class="bubble bubble-red" style="font-size:.78em;">"Từ chối — vì là phụ nữ."</div>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; line-height:1.7;">
+          Họ bầu <strong>chồng bà</strong> vào thay.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Di sản — vẫn nguy hiểm đến tận nay</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">📔☢️</span>
+        <div style="color:#f1948a; font-size:.83em; text-align:center; line-height:1.7;">
+          Curie chết năm 1934 vì<br>thiếu máu bất sản —<br>phơi nhiễm phóng xạ kéo dài.
+        </div>
+        <div style="background:#1a0a0a; border:2px solid #e74c3c; border-radius:6px; padding:6px; font-size:.8em; color:#f1948a; line-height:1.5; text-align:center;">
+          Sổ tay thí nghiệm của bà<br>vẫn phóng xạ đến nay.<br>
+          Cất trong hộp chì tại<br>Thư viện Quốc gia Pháp.<br>
+          Đọc phải mặc đồ bảo hộ.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RUTHERFORD -->
+<div class="ch-div">⚛️ ERNEST RUTHERFORD — 1871–1937 ⚛️</div>
+<div class="row">
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi">
+      <div class="nar">Manchester, 1909 — bắn hạt alpha vào lá vàng</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">🔫💥🥇</span>
+          <div style="font-size:.82em; margin-top:8px; color:#5d4037; line-height:1.7;">
+            Bắn hạt alpha vào lá vàng mỏng.<br>
+            Phần lớn <strong>xuyên thẳng qua.</strong><br>
+            Một số ít <strong>bị dội ngược lại.</strong>
+          </div>
+        </div>
+        <div style="flex:1; text-align:center;">
+          <div class="bubble" style="font-size:.82em;">"Như bắn đại bác vào tờ giấy... và đạn bật lại đánh vào mình."</div>
+          <div style="font-size:.82em; margin-top:16px; color:#5d4037; line-height:1.7;">
+            → Nguyên tử <strong>hầu như rỗng.</strong><br>
+            Toàn bộ khối lượng tập trung<br>ở hạt nhân cực nhỏ ở tâm.
+          </div>
+        </div>
+      </div>
+      <div class="cap">Nguyên tử: hầu hết là khoảng không. Nếu nhân nguyên tử to bằng quả bóng đá, lớp vỏ electron cách đó hàng km.</div>
+    </div>
+  </div>
+
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Mô hình hạt nhân</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:3em; text-align:center;">⚛️</div>
+        <div style="font-size:.82em; color:#1a5276; text-align:center; line-height:1.8;">
+          <strong>Hạt nhân:</strong> proton + neutron<br>
+          Nhỏ nhưng hầu hết khối lượng<br><br>
+          <strong>Electron:</strong> bay quanh<br>
+          Lớp vỏ rộng — hầu hết là... rỗng
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LISE MEITNER -->
+<div class="ch-div">⚡ PHÂN HẠCH & VỤ CƯỚP NOBEL LỚN NHẤT ⚡</div>
+<div class="row">
+  <div class="panel bg-orange">
+    <div class="pi pi-tall">
+      <div class="nar nar-orange">Lise Meitner & Otto Hahn — 1938</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">⚛️💥</span>
+        <div style="font-size:.83em; text-align:center; color:#784212; line-height:1.7;">
+          Meitner và Hahn cùng nhau<br>
+          tìm ra <strong>phân hạch uranium</strong> —<br>
+          hạt nhân tách ra giải phóng năng lượng khổng lồ.
+        </div>
+        <div style="font-size:.82em; text-align:center; color:#5d4037; line-height:1.6; font-style:italic;">
+          Meitner: người tị nạn Do Thái<br>vừa trốn khỏi Đức Quốc xã.<br>
+          Từ chối tham gia dự án Manhattan.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Nobel Hóa học 1944</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">🏅❌</span>
+        <div style="color:#f1948a; font-size:.83em; text-align:center; line-height:1.7;">
+          Nobel trao cho<br>
+          <strong style="color:#ffd700;">Otto Hahn.</strong><br><br>
+          Lise Meitner<br>
+          <strong style="color:#e74c3c;">không được nhắc đến.</strong>
+        </div>
+        <div style="background:#1a0a0a; border:2px solid #e74c3c; border-radius:6px; padding:6px; font-size:.8em; color:#f1948a; text-align:center; line-height:1.5;">
+          Nhiều nhà khoa học gọi đây là<br>"vụ cướp Nobel lớn nhất lịch sử."<br><br>
+          Tên bà được đặt cho<br>nguyên tố 109: <strong style="color:#ffd700;">Meitnerium (Mt)</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-red">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Hậu quả của phân hạch</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:2.5em; text-align:center;">⚛️ → 💥 + 🔋</div>
+        <div style="font-size:.82em; text-align:center; color:#7b241c; line-height:1.7;">
+          Một nguyên tử uranium nặng<br>tách ra → hai nguyên tử nhẹ hơn<br>+ năng lượng khổng lồ.
+        </div>
+        <div style="font-size:.82em; text-align:center; color:#5d4037; line-height:1.6;">
+          Cùng nguyên lý —<br>
+          nhà máy điện hạt nhân và<br>bom nguyên tử.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EINSTEIN E=mc² -->
+<div class="ch-div">🌌 EINSTEIN — E = mc² — 1905 🌌</div>
+<div class="row">
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Bern, 1905 — Văn phòng Cục Sáng chế</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">📋✍️</span>
+        <div style="color:#f9e79f; font-size:.83em; text-align:center; line-height:1.7;">
+          Einstein: thư ký hạng 3<br>tại Cục Sáng chế Bern.<br>Không phải giáo sư.<br>Không có phòng thí nghiệm.<br>Không tiếp cận thư viện đại học.
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.78em;">"Làm việc ban ngày. Viết vật lý ban đêm."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Năm 1905 — Annus Mirabilis (Năm Thần Kỳ)</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:2em; text-align:center;">📝📝📝📝</div>
+        <div style="font-size:.82em; color:#5d4037; line-height:1.8; text-align:center;">
+          <strong>4 bài báo</strong> đăng trong 1 năm:<br>
+          ① Hiệu ứng quang điện<br>
+          ② Chuyển động Brown<br>
+          ③ Tương đối hẹp<br>
+          ④ <strong>E = mc²</strong>
+        </div>
+        <div style="background:#fef9e7; border:2px solid #d4ac0d; border-radius:6px; padding:5px; font-size:.78em; font-weight:700; text-align:center; color:#7d6608; line-height:1.5;">
+          Luận án tiến sĩ của ông bị Đại học Bern<br>từ chối lần đầu trong cùng năm đó.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-red">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Công thức thay đổi tất cả</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <div class="formula formula-gold" style="font-size:1.8em; border-color:#c0392b; background:#fdedec; color:#7b241c;">E = mc²</div>
+        <div style="font-size:.82em; text-align:center; color:#7b241c; line-height:1.7;">
+          E — năng lượng<br>m — khối lượng<br>c — tốc độ ánh sáng (~3×10⁸ m/s)
+        </div>
+        <div style="font-size:.82em; text-align:center; color:#555; line-height:1.6; font-weight:700;">
+          1 kg vật chất = 9×10¹⁶ Joule năng lượng.<br>
+          Lớn hơn bất kỳ vũ khí thông thường.
+        </div>
+      </div>
+      <div class="cap">Meitner dùng công thức này để giải thích tại sao phân hạch uranium giải phóng năng lượng khổng lồ.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING TOÀN BỘ SERIES -->
+<div class="closing-full">
+  <div class="closing-series-end">✦ HẾT PHẦN IX — KẾT THÚC TOÀN BỘ ✦</div>
+  <div class="closing-title">VẬT LÝ THCS TOÀN TẬP</div>
+  <div class="closing-lines">
+    Röntgen phát hiện tia X tình cờ, chụp bàn tay vợ, từ chối đăng ký bằng sáng chế, nhận Nobel đầu tiên — chết nghèo.<br>
+    Curie nhận hai Nobel, bị từ chối vì là phụ nữ. Sổ tay thí nghiệm của bà vẫn phóng xạ, cất trong hộp chì tại Paris.<br>
+    Rutherford bắn đạn vào tờ giấy, đạn bật lại — phát hiện nguyên tử hầu như rỗng.<br>
+    Meitner và Hahn tìm ra phân hạch. Hahn nhận Nobel. Meitner không được nhắc. Tên bà thành nguyên tố 109.<br>
+    Einstein viết E = mc² năm 25 tuổi, làm thư ký văn phòng sáng chế, bị từ chối bằng tiến sĩ trong cùng năm đó.
+  </div>
+  <div class="closing-quote">"Điều kỳ diệu nhất là vũ trụ có thể hiểu được."</div>
+  <div class="closing-attrib">— Albert Einstein</div>
+</div>
+
+</div>
+</body>
+</html>

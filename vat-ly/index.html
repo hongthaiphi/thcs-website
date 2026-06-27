@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS — Comic 9 Chương</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #060e1a; color: #eee; font-family: 'Comic Neue','Comic Sans MS',cursive; min-height: 100vh; }
+
+.back { display: inline-flex; align-items: center; gap: 6px; color: #555; text-decoration: none; font-size: .85em; padding: 20px 24px 0; transition: color .2s; }
+.back:hover { color: #2980b9; }
+
+.hero { text-align: center; padding: 32px 24px 40px; }
+.hero-label { font-family:'Bangers',sans-serif; letter-spacing:5px; color:#2980b9; font-size:.9em; margin-bottom:8px; }
+.hero-title { font-family:'Bangers',sans-serif; font-size: clamp(2.5em, 7vw, 4.5em); color:#fff; text-shadow: 3px 3px 0 #1a5276; letter-spacing:2px; margin-bottom:10px; }
+.hero-sub { color:#555; font-size:.9em; }
+
+.chapters { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; display: flex; flex-direction: column; gap: 10px; }
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #0a1628;
+  border: 2px solid #1a2a3a;
+  border-radius: 10px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s, transform .15s, background .2s;
+}
+.ch:hover { border-color: #2980b9; background: #0d1e35; transform: translateX(4px); }
+
+.ch-num {
+  font-family: 'Bangers', sans-serif;
+  font-size: 1.8em;
+  color: #1a3a5c;
+  width: 44px;
+  flex-shrink: 0;
+  text-align: center;
+  line-height: 1;
+}
+.ch:hover .ch-num { color: #2980b9; }
+
+.ch-icon { font-size: 2em; flex-shrink: 0; }
+
+.ch-info { flex: 1; }
+.ch-part { font-size: .72em; color: #2980b9; font-weight: 700; letter-spacing: 2px; margin-bottom: 3px; }
+.ch-title { font-family: 'Bangers', sans-serif; font-size: 1.3em; letter-spacing: .5px; color: #ddd; line-height: 1.1; }
+.ch-desc { font-size: .8em; color: #555; margin-top: 4px; line-height: 1.5; }
+
+.ch-arrow { color: #1a3a5c; font-size: 1.2em; flex-shrink: 0; transition: color .2s; }
+.ch:hover .ch-arrow { color: #2980b9; }
+
+footer { text-align:center; padding:24px; border-top:1px solid #111; color:#333; font-size:.8em; }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back">← Trang chủ</a>
+
+<div class="hero">
+  <div class="hero-label">⚡ VẬT LÝ THCS TOÀN TẬP ⚡</div>
+  <h1 class="hero-title">COMIC — 9 CHƯƠNG</h1>
+  <p class="hero-sub">Mỗi chương là một file riêng · CSS-only · Không cần internet sau khi tải</p>
+</div>
+
+<div class="chapters">
+
+  <a href="01-chuyen-dong-luc.html" class="ch">
+    <div class="ch-num">01</div>
+    <div class="ch-icon">🏃</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN I</div>
+      <div class="ch-title">Chuyển Động & Lực</div>
+      <div class="ch-desc">Galileo lăn bi, Newton 22 tuổi trong dịch hạch, Leonardo da Vinci giấu công trình, Hooke bị xóa chân dung</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="02-ap-suat-luc-day.html" class="ch">
+    <div class="ch-num">02</div>
+    <div class="ch-icon">💧</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN II</div>
+      <div class="ch-title">Áp Suất & Lực Đẩy</div>
+      <div class="ch-desc">Giày cao gót vs voi, Pascal 19 tuổi chế máy tính không ai mua, Torricelli thừa kế câu hỏi của Galileo, Archimedes và cái chết bên bài toán hình học</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="03-cong-nang-luong.html" class="ch">
+    <div class="ch-num">03</div>
+    <div class="ch-icon">⚙️</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN III</div>
+      <div class="ch-title">Công & Năng Lượng</div>
+      <div class="ch-desc">Watt không phát minh ra động cơ hơi nước, Julius Mayer bị trại tâm thần 10 năm rồi nhận huy chương Hoàng gia Anh vì cùng công trình</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="04-nhiet-hoc.html" class="ch">
+    <div class="ch-num">04</div>
+    <div class="ch-icon">🌡️</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN IV</div>
+      <div class="ch-title">Nhiệt Học</div>
+      <div class="ch-desc">Joule trình bày năm 1843 cả hội trường bỏ đi ra, Boltzmann tự tử một năm trước khi Einstein xác nhận ông đúng, Celsius đặt thang nhiệt độ ngược</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="05-am-thanh.html" class="ch">
+    <div class="ch-num">05</div>
+    <div class="ch-icon">🎵</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN V</div>
+      <div class="ch-title">Âm Thanh</div>
+      <div class="ch-desc">Không gian không có tiếng la hét, Doppler thuê dàn kèn ngồi trên xe lửa, Carnegie Hall thiết kế bởi kiến trúc sư nghiệp dư tự học acoustics</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="06-anh-sang-quang-hoc.html" class="ch">
+    <div class="ch-num">06</div>
+    <div class="ch-icon">☀️</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN VI</div>
+      <div class="ch-title">Ánh Sáng & Quang Học</div>
+      <div class="ch-desc">Bầu trời xanh vs hoàng hôn đỏ là cùng một hiện tượng, Ibn al-Haytham bị giam cầm viết nền tảng quang học, hai đứa trẻ → kính viễn vọng → Galileo → bốn mặt trăng Sao Mộc</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="07-dien-hoc.html" class="ch">
+    <div class="ch-num">07</div>
+    <div class="ch-icon">⚡</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN VII</div>
+      <div class="ch-title">Điện Học</div>
+      <div class="ch-desc">Franklin thả diều trong giông bão và đặt chiều dòng điện sai (giữ nguyên đến nay), Ohm mất việc 13 năm rồi được Hoàng gia Anh vinh danh</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="08-dien-tu.html" class="ch">
+    <div class="ch-num">08</div>
+    <div class="ch-icon">🧲</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN VIII</div>
+      <div class="ch-title">Điện Từ</div>
+      <div class="ch-desc">Faraday thợ đóng sách → phụ tá phòng thí nghiệm → phát minh lớn nhất thế kỷ, Ampère thiên tài hỗn loạn, Tesla thắng DC vs AC rồi chết một mình</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+  <a href="09-quang-pho-hat-nhan.html" class="ch">
+    <div class="ch-num">09</div>
+    <div class="ch-icon">☢️</div>
+    <div class="ch-info">
+      <div class="ch-part">PHẦN IX</div>
+      <div class="ch-title">Quang Phổ & Hạt Nhân</div>
+      <div class="ch-desc">Röntgen chụp bàn tay vợ — ảnh X-quang đầu tiên, Curie sổ tay thí nghiệm vẫn phóng xạ cất trong hộp chì, Meitner bị cướp Nobel, Einstein ở văn phòng sáng chế</div>
+    </div>
+    <div class="ch-arrow">▶</div>
+  </a>
+
+</div>
+
+<footer>← <a href="../index.html" style="color:#2980b9; text-decoration:none;">Về trang chủ</a> · <a href="doc.html" style="color:#2980b9; text-decoration:none;">Đọc bài đầy đủ</a></footer>
+
+</body>
+</html>

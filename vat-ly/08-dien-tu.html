@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Điện Từ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0f0a1e; font-family: 'Comic Neue','Comic Sans MS',cursive; padding: 24px 16px; color: #111; }
+.comic-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+
+.cover { background: #0f0a1e; border: 5px solid #2ecc71; padding: 32px 24px; text-align: center; position: relative; overflow: hidden; margin-bottom: 4px; }
+.cover::after { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(46,204,113,.05) 8px, rgba(46,204,113,.05) 16px); pointer-events:none; }
+.cover-series { font-family:'Bangers',sans-serif; color:#2ecc71; letter-spacing:6px; font-size:1em; margin-bottom:6px; }
+.cover-title  { font-family:'Bangers',sans-serif; color:#fff; font-size:4em; line-height:.9; text-shadow:4px 4px 0 #1e8449, 8px 8px 0 #0e4024; letter-spacing:2px; margin-bottom:10px; }
+.cover-sub    { color:#82e0aa; font-weight:700; font-size:1.05em; letter-spacing:1px; }
+
+.ch-div { background:#0f0a1e; color:#2ecc71; font-family:'Bangers',sans-serif; font-size:1.25em; letter-spacing:4px; text-align:center; padding:10px 16px; margin:4px 0; }
+.row { display:flex; gap:4px; }
+.panel { border:3px solid #111; background:#fff; position:relative; overflow:hidden; flex:1; }
+.panel-2x { flex:2; }
+.panel-3x { flex:3; }
+
+.bg-dark   { background:#0f0a1e; color:#fff; }
+.bg-yellow { background:#fef9e7; }
+.bg-green  { background:#eafaf1; }
+.bg-blue   { background:#ebf5fb; }
+.bg-red    { background:#fdedec; }
+.bg-orange { background:#fef0e7; }
+.bg-gray   { background:#f2f3f4; }
+.bg-purple { background:#f5eef8; }
+
+.pi       { padding:12px; display:flex; flex-direction:column; gap:8px; min-height:190px; height:100%; }
+.pi-tall  { min-height:290px; }
+.pi-short { min-height:130px; }
+
+.nar         { background:#ffd700; border:2px solid #111; padding:4px 8px; font-size:.78em; font-weight:700; flex-shrink:0; }
+.nar-green   { background:#a9dfbf; }
+.nar-blue    { background:#aed6f1; }
+.nar-red     { background:#f1948a; color:#fff; }
+.nar-dark    { background:#111; color:#ffd700; }
+.nar-orange  { background:#fad7a0; }
+.nar-purple  { background:#d2b4de; }
+
+.scene     { flex:1; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+.scene-col { flex-direction:column; }
+
+.fig    { font-size:3em;   line-height:1; display:block; }
+.fig-lg { font-size:4.5em; line-height:1; display:block; }
+.fig-xl { font-size:6em;   line-height:1; display:block; }
+
+.bubble { background:#fff; border:2.5px solid #111; border-radius:18px; padding:7px 11px; font-weight:700; font-size:.82em; line-height:1.35; position:relative; max-width:95%; }
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px; left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-dark { background:#0f0a1e; color:#2ecc71; border-color:#2ecc71; }
+.bubble-dark::after  { border-top-color:#2ecc71; }
+.bubble-dark::before { border-top-color:#0f0a1e; }
+.bubble-top::after  { bottom:auto; top:-13px; left:18px; border-top:0; border-bottom-color:#111; }
+.bubble-top::before { bottom:auto; top:-9px; left:21px; border-top:0; border-bottom-color:#fff; z-index:1; }
+
+.thought { background:#eaf4fb; border:2.5px solid #111; border-radius:50%; padding:10px 16px; font-weight:700; font-size:.82em; line-height:1.4; text-align:center; position:relative; }
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+.formula       { background:#eafaf1; border:2px solid #2ecc71; border-radius:8px; padding:7px 14px; font-size:1.1em; font-weight:700; text-align:center; color:#145a32; flex-shrink:0; }
+.formula-blue  { background:#ebf5fb; border-color:#2980b9; color:#1a5276; }
+.formula-red   { background:#fdedec; border-color:#c0392b; color:#7b241c; }
+
+.sfx    { font-family:'Bangers',sans-serif; font-size:2.2em; color:#2ecc71; text-shadow:2px 2px 0 #111; transform:rotate(-4deg); display:inline-block; letter-spacing:2px; }
+.sfx-r  { color:#c0392b; }
+.sfx-lg { font-size:3em; }
+.sfx-sm { font-size:1.4em; }
+
+.cap { background:#111; color:#fff; padding:5px 9px; font-size:.76em; font-style:italic; flex-shrink:0; margin-top:auto; }
+
+/* AC vs DC battle */
+.battle-box { flex:1; border:3px solid #111; border-radius:8px; padding:8px; text-align:center; }
+
+.closing { background:#0f0a1e; border:3px solid #111; color:#fff; text-align:center; padding:28px 20px; margin-top:4px; }
+.closing-title { font-family:'Bangers',sans-serif; color:#2ecc71; font-size:1.6em; letter-spacing:4px; margin-bottom:12px; }
+.closing-lines { color:#82e0aa; font-size:.88em; line-height:2; margin-bottom:14px; }
+.closing-next  { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.1em; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN VIII ✦</div>
+  <div class="cover-title">ĐIỆN<br>TỪ</div>
+  <div class="cover-sub">Tại sao Faraday không biết tính tích phân mà lại vĩ đại nhất?</div>
+</div>
+
+<!-- FARADAY -->
+<div class="ch-div">📚 MICHAEL FARADAY — 1791–1867 📚</div>
+<div class="row">
+  <div class="panel bg-gray">
+    <div class="pi pi-tall">
+      <div class="nar">London — xuất thân nghèo, thợ đóng sách</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">📚🔨</span>
+        <div style="font-size:.83em; text-align:center; color:#555; line-height:1.7;">
+          Michael Faraday:<br>
+          Không học đại học bao giờ.<br>
+          Cha thợ rèn. Làm thợ đóng sách.<br><br>
+          Ước mơ: làm việc trong phòng thí nghiệm.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Xin việc làm phụ tá cho Humphry Davy</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">📝✉️</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Faraday ghi chép tỉ mỉ<br>tất cả bài giảng của Davy<br>mà ông đã dự.
+        </div>
+        <div class="bubble" style="font-size:.78em;">"Thưa ông Davy, tôi muốn làm phụ tá phòng thí nghiệm. Xin đính kèm những ghi chép này."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Davy nhận ông</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🤝✅</span>
+        <div style="color:#82e0aa; font-size:.83em; text-align:center; line-height:1.7;">
+          Davy nhận Faraday làm phụ tá.
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.78em;">"Khám phá lớn nhất của đời tôi... là tìm ra Faraday."</div>
+        <div style="color:#aaa; font-size:.78em; text-align:center; font-style:italic; margin-top:6px;">— Humphry Davy, về sau</div>
+      </div>
+      <div class="cap" style="color:#82e0aa;">Mọi nhà máy điện trên thế giới đang chạy trên khám phá của người không biết tính tích phân.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CẢM ỨNG ĐIỆN TỪ -->
+<div class="row">
+  <div class="panel panel-2x bg-green">
+    <div class="pi">
+      <div class="nar nar-green">1831 — Cảm ứng điện từ</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">🔄🧲</span>
+          <div style="font-size:.82em; margin-top:8px; color:#145a32; line-height:1.7; font-weight:700;">
+            Từ thông qua cuộn dây<br>thay đổi → sinh dòng điện.
+          </div>
+        </div>
+        <div style="font-size:2em; color:#aaa;">→</div>
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">💡⚡🌊💨</span>
+          <div style="font-size:.8em; margin-top:8px; color:#145a32; line-height:1.7;">
+            Tuabin nước, tuabin gió,<br>tuabin hơi nước —<br>tất cả làm <strong>đúng một việc</strong>:<br>quay cuộn dây trong từ trường.
+          </div>
+        </div>
+      </div>
+      <div class="cap">Maxwell sau đó dùng toán học để hoàn thiện — nhưng ý tưởng gốc là của Faraday không biết toán.</div>
+    </div>
+  </div>
+
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Máy biến thế — truyền điện đi xa</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula formula-blue" style="font-size:.9em;">U₁/U₂ = n₁/n₂</div>
+        <div style="font-size:3em; text-align:center;">🏭→→→500kV→→→🏠220V</div>
+        <div style="font-size:.8em; color:#1a5276; text-align:center; line-height:1.7;">
+          Tăng điện áp → dòng giảm → nhiệt tổn thất Q = I²Rt giảm mạnh.<br>
+          Đường dây 500kV → hạ áp xuống 220V tại nhà.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ØRSTED & AMPÈRE -->
+<div class="ch-div">🧭 ØRSTED & AMPÈRE — ĐIỆN VÀ TỪ KẾT HỢP 🧭</div>
+<div class="row">
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Hans Christian Ørsted, 1820 — tình cờ</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🧭⚡</span>
+        <div style="font-size:.83em; text-align:center; color:#1a5276; line-height:1.7;">
+          Ørsted đang giảng bài.<br>
+          Bật dòng điện qua dây dẫn<br>đặt gần la bàn.
+        </div>
+        <div class="sfx sfx-sm" style="color:#2980b9; text-align:center;">Kim lệch!</div>
+        <div class="bubble" style="font-size:.78em;">"Điện và từ... liên quan đến nhau."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi">
+      <div class="nar">André-Marie Ampère — hai tuần sau khi nghe tin</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="flex:1; text-align:center;">
+          <span class="fig-lg">🏃‍♂️⚗️</span>
+          <div style="font-size:.82em; margin-top:8px; color:#5d4037; line-height:1.7;">
+            Ampère nghe tin về Ørsted.<br>
+            Tuần sau bắt đầu thí nghiệm.<br>
+            <strong>Hai tuần sau:</strong> trình bày lý thuyết<br>toán học hoàn chỉnh về lực<br>giữa hai dây dẫn có dòng điện.
+          </div>
+        </div>
+        <div style="flex:1; text-align:center;">
+          <span class="fig-lg">😵🎩🗝️</span>
+          <div style="font-size:.8em; margin-top:8px; color:#555; line-height:1.7; font-style:italic;">
+            Đời sống của Ampère:<br>
+            Nhà cửa bừa bộn đến mức vợ bỏ.<br>
+            Hay quên đến mức viết công thức<br>lên tấm bảng trên xe ngựa,<br>rồi không nhớ xuống xe.<br>
+            Từng nhầm hòm nhà người khác<br>là ghế ngồi ở quảng trường.
+          </div>
+        </div>
+      </div>
+      <div class="cap">Tốc độ làm việc kinh hoàng — như thể toàn bộ lý thuyết đã chín trong đầu, chỉ chờ thực nghiệm xác nhận.</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAM CHÂM -->
+<div class="row">
+  <div class="panel bg-green">
+    <div class="pi pi-short">
+      <div class="nar nar-green">Nam châm — không thể tách hai cực</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center;">
+          <span class="fig">🧲✂️</span>
+          <div style="font-size:.82em; margin-top:6px; color:#145a32; line-height:1.7;">
+            Cắt đôi nam châm →<br>
+            mỗi nửa có đủ 2 cực mới N-S.<br>
+            Cắt mãi vẫn thế.
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <span class="fig">🌍🛡️</span>
+          <div style="font-size:.82em; margin-top:6px; color:#145a32; line-height:1.7;">
+            Trái Đất = nam châm khổng lồ.<br>
+            Từ trường bảo vệ khí quyển<br>khỏi gió Mặt Trời —<br>không có nó, sự sống không tồn tại.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESLA vs EDISON -->
+<div class="ch-div">⚡ TESLA vs EDISON — CUỘC CHIẾN DÒNG ĐIỆN ⚡</div>
+<div class="row">
+  <div class="panel">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Thomas Edison — DC (Một chiều)</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">💡⚡</span>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; line-height:1.7;">
+          Edison bảo vệ DC.<br>
+          Để chứng minh AC nguy hiểm,<br>ông dùng AC <strong>điện tử voi và chó</strong><br>trước công chúng.
+        </div>
+        <div class="sfx sfx-r sfx-sm" style="text-align:center;">KINH KHỦNG!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Nikola Tesla — AC (Xoay chiều)</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">⚡🔄</span>
+        <div style="color:#82e0aa; font-size:.83em; text-align:center; line-height:1.7;">
+          Tesla và Westinghouse:<br>
+          AC truyền đi xa được<br>qua máy biến thế.<br>
+          DC: không.
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.78em;">"Toàn thế giới sẽ dùng AC."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-gray">
+    <div class="pi pi-tall">
+      <div class="nar">Kết quả</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">🏆</span>
+        <div style="font-size:.85em; text-align:center; color:#555; font-weight:700; line-height:1.7;">
+          Tesla thắng.<br>
+          Toàn thế giới dùng AC.
+        </div>
+        <div style="background:#f2f3f4; border:2px solid #e74c3c; border-radius:6px; padding:7px; font-size:.8em; color:#c0392b; line-height:1.6; text-align:center;">
+          Tesla cuối đời:<br>
+          Chết một mình trong phòng khách sạn.<br>
+          Phá sản.<br>
+          Phần lớn bằng sáng chế<br>bị lấy mất hoặc hết hạn.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN VIII —</div>
+  <div class="closing-lines">
+    Faraday: thợ đóng sách → gửi ghi chép bài giảng → phụ tá phòng thí nghiệm → khám phá cảm ứng điện từ. Không biết tính tích phân.<br>
+    Ørsted phát hiện điện và từ liên quan tình cờ trong giờ giảng bài. Ampère nghe tin — hai tuần sau lý thuyết hoàn chỉnh.<br>
+    Ampère: thiên tài hỗn loạn — vợ bỏ, hay quên, nhầm hòm người khác là ghế ngồi ở quảng trường.<br>
+    Tesla thắng cuộc chiến DC vs AC. Chết một mình, phá sản — toàn thế giới đang dùng điện xoay chiều của ông.
+  </div>
+  <div class="closing-next">➤ PHẦN IX: QUANG PHỔ & HẠT NHÂN ➤</div>
+</div>
+
+</div>
+</body>
+</html>

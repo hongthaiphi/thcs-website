@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Công & Năng Lượng</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1c0808;
+  font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+  padding: 24px 16px;
+  color: #111;
+}
+
+.comic-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* COVER */
+.cover {
+  background: #0d0d0d;
+  border: 5px solid #e74c3c;
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(231,76,60,.06) 8px, rgba(231,76,60,.06) 16px
+  );
+  pointer-events: none;
+}
+.cover-series { font-family:'Bangers',sans-serif; color:#e74c3c; letter-spacing:6px; font-size:1em; margin-bottom:6px; }
+.cover-title  { font-family:'Bangers',sans-serif; color:#fff; font-size:4em; line-height:.9; text-shadow:4px 4px 0 #922b21, 8px 8px 0 #511515; letter-spacing:2px; margin-bottom:10px; }
+.cover-sub    { color:#f1948a; font-weight:700; font-size:1.05em; letter-spacing:1px; }
+
+/* CHAPTER DIVIDER */
+.ch-div {
+  background: #0d0d0d;
+  color: #e74c3c;
+  font-family: 'Bangers', sans-serif;
+  font-size: 1.25em;
+  letter-spacing: 4px;
+  text-align: center;
+  padding: 10px 16px;
+  margin: 4px 0;
+}
+
+/* ROW */
+.row { display: flex; gap: 4px; }
+
+/* PANEL */
+.panel {
+  border: 3px solid #111;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+.panel-2x { flex: 2; }
+.panel-3x { flex: 3; }
+.panel-07  { flex: .75; }
+
+.bg-dark   { background: #0d0d0d; color: #fff; }
+.bg-yellow { background: #fef9e7; }
+.bg-orange { background: #fef0e7; }
+.bg-red    { background: #fdedec; }
+.bg-blue   { background: #ebf5fb; }
+.bg-green  { background: #eafaf1; }
+.bg-purple { background: #f5eef8; }
+.bg-gray   { background: #f2f3f4; }
+
+/* PANEL INNER */
+.pi       { padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 190px; height: 100%; }
+.pi-tall  { min-height: 280px; }
+.pi-short { min-height: 130px; }
+.pi-xs    { min-height: 100px; }
+
+/* NARRATION */
+.nar         { background: #ffd700; border: 2px solid #111; padding: 4px 8px; font-size: .78em; font-weight: 700; flex-shrink: 0; }
+.nar-blue    { background: #aed6f1; }
+.nar-red     { background: #f1948a; color: #fff; }
+.nar-dark    { background: #111; color: #ffd700; }
+.nar-green   { background: #a9dfbf; }
+.nar-orange  { background: #fad7a0; }
+.nar-purple  { background: #d2b4de; }
+
+/* SCENE */
+.scene     { flex: 1; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.scene-col { flex-direction: column; }
+
+/* FIGURES */
+.fig    { font-size: 3em;   line-height: 1; display: block; }
+.fig-lg { font-size: 4.5em; line-height: 1; display: block; }
+.fig-sm { font-size: 2em;   line-height: 1; display: block; }
+.fig-xl { font-size: 6em;   line-height: 1; display: block; }
+
+/* SPEECH BUBBLE */
+.bubble {
+  background: #fff;
+  border: 2.5px solid #111;
+  border-radius: 18px;
+  padding: 7px 11px;
+  font-weight: 700;
+  font-size: .82em;
+  line-height: 1.35;
+  position: relative;
+  max-width: 95%;
+}
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px;  left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-top::after  { bottom:auto; top:-13px; left:18px; border-top:0; border-bottom-color:#111; }
+.bubble-top::before { bottom:auto; top:-9px;  left:21px; border-top:0; border-bottom-color:#fff; z-index:1; }
+.bubble-dark  { background:#0d0d0d; color:#ffd700; border-color:#ffd700; }
+.bubble-dark::after  { border-top-color:#ffd700; }
+.bubble-dark::before { border-top-color:#0d0d0d; }
+.bubble-red   { background:#fdedec; border-color:#e74c3c; color:#7b241c; }
+.bubble-red::after  { border-top-color:#e74c3c; }
+.bubble-red::before { border-top-color:#fdedec; }
+
+/* THOUGHT BUBBLE */
+.thought {
+  background: #eaf4fb;
+  border: 2.5px solid #111;
+  border-radius: 50%;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: .82em;
+  line-height: 1.4;
+  text-align: center;
+  position: relative;
+}
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+/* FORMULA */
+.formula       { background:#ebf5fb; border:2px solid #2980b9; border-radius:8px; padding:7px 14px; font-size:1.1em; font-weight:700; text-align:center; color:#1a5276; flex-shrink:0; }
+.formula-red   { background:#fdedec; border-color:#c0392b; color:#7b241c; }
+.formula-green { background:#eafaf1; border-color:#1e8449; color:#145a32; }
+.formula-gold  { background:#fef9e7; border-color:#d4ac0d; color:#7d6608; }
+.formula-orange{ background:#fef0e7; border-color:#d35400; color:#784212; }
+
+/* SFX */
+.sfx    { font-family:'Bangers',sans-serif; font-size:2.2em; color:#c0392b; text-shadow:2px 2px 0 #111; transform:rotate(-4deg); display:inline-block; letter-spacing:2px; }
+.sfx-b  { color:#2980b9; }
+.sfx-y  { color:#f39c12; }
+.sfx-g  { color:#27ae60; }
+.sfx-sm { font-size:1.4em; }
+.sfx-lg { font-size:3em; }
+
+/* CAPTION */
+.cap { background:#111; color:#fff; padding:5px 9px; font-size:.76em; font-style:italic; flex-shrink:0; margin-top:auto; }
+
+/* DANGER BAR */
+.danger-bar {
+  width: 100%;
+  border: 2px solid #e74c3c;
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+  height: 22px;
+  position: relative;
+}
+.danger-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f9ebea, #e74c3c);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  font-size: .72em;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ENERGY FLOW */
+.e-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .78em;
+  font-weight: 700;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.e-box {
+  background: #fad7a0;
+  border: 2px solid #e59866;
+  border-radius: 6px;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+.e-arrow { color: #e74c3c; font-size: 1.2em; }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 6px; }
+.tl-item  { display: flex; gap: 8px; align-items: flex-start; font-size: .8em; }
+.tl-year  { background: #e74c3c; color: #fff; font-weight: 700; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; font-size: .9em; min-width: 46px; text-align: center; }
+.tl-text  { color: #333; line-height: 1.5; }
+
+/* CLOSING */
+.closing { background: #0d0d0d; border: 3px solid #111; color: #fff; text-align: center; padding: 28px 20px; margin-top: 4px; }
+.closing-title { font-family:'Bangers',sans-serif; color:#e74c3c; font-size:1.6em; letter-spacing:4px; margin-bottom:12px; }
+.closing-lines { color:#f1948a; font-size:.88em; line-height:2; margin-bottom:14px; }
+.closing-next  { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.1em; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN III ✦</div>
+  <div class="cover-title">CÔNG<br>& NĂNG LƯỢNG</div>
+  <div class="cover-sub">Tại sao không thể chế máy chạy mãi mà không cần nhiên liệu?</div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCENE 1: ĐỘNG CƠ VĨNH CỬU
+══════════════════════════════════════ -->
+<div class="ch-div">⚙️ ĐỘNG CƠ VĨNH CỬU — GIẤc MƠ CỦA LOÀI NGƯỜI ⚙️</div>
+
+<div class="row">
+
+  <!-- Giấc mơ -->
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Ước mơ lớn nhất của các kỹ sư qua nhiều thế kỷ</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-xl">⚙️💫</span>
+        <div class="thought" style="font-size:.82em;">
+          Chế một cái máy<br>
+          chạy mãi mãi...<br>
+          không cần nhiên liệu!
+        </div>
+        <div style="font-size:.82em; text-align:center; color:#555; line-height:1.6;">
+          Hàng trăm năm.<br>
+          Hàng nghìn bản vẽ.<br>
+          Hàng nghìn đơn đăng ký sáng chế.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phòng sáng chế -->
+  <div class="panel">
+    <div class="pi pi-tall">
+      <div class="nar nar-orange">Phòng Sáng chế Mỹ</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">📋📋📋</span>
+        <div style="font-size:.85em; text-align:center; color:#5d4037; line-height:1.7;">
+          Hàng <strong>nghìn</strong> đơn đăng ký<br>
+          "perpetual motion machine"<br>
+          nộp vào Phòng Sáng chế Mỹ.
+        </div>
+        <div class="bubble" style="font-size:.8em;">"Lần này tôi chắc chắn làm được!"</div>
+        <div style="font-size:1.5em; text-align:center; margin-top:4px;">📝 × 1000</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thất bại -->
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Kết quả</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">❌</span>
+        <div class="sfx sfx-lg" style="text-align:center; color:#e74c3c; text-shadow:2px 2px 0 #f1948a;">TẤT CẢ THẤT BẠI</div>
+        <div style="color:#aaa; font-size:.82em; text-align:center; line-height:1.7;">
+          Vì năng lượng <strong style="color:#ffd700;">bảo toàn.</strong><br>
+          Không có đầu ra<br>lớn hơn đầu vào.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Công thức -->
+<div class="row">
+  <div class="panel panel-2x bg-blue">
+    <div class="pi pi-short">
+      <div class="nar nar-blue">Công cơ học</div>
+      <div class="scene" style="gap:16px;">
+        <div class="formula" style="font-size:1.05em;">A = F × s × cos(α)</div>
+        <div style="font-size:.8em; color:#1a5276; line-height:1.8;">
+          A — công (Joule)<br>
+          F — lực tác dụng (N)<br>
+          s — quãng đường (m)<br>
+          α — góc giữa F và hướng chuyển động
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel bg-green">
+    <div class="pi pi-short">
+      <div class="nar nar-green">Công suất</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula formula-green">P = A / t</div>
+        <div style="font-size:.8em; text-align:center; color:#145a32; line-height:1.6;">
+          Đơn vị: Watt (W)<br>
+          1 W = 1 J/s
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     JAMES WATT
+══════════════════════════════════════ -->
+<div class="ch-div">🔩 JAMES WATT — 1736–1819 🔩</div>
+
+<div class="row">
+
+  <!-- Newcomen làm trước -->
+  <div class="panel bg-gray">
+    <div class="pi pi-tall">
+      <div class="nar">Sự thật ít người biết</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🏭😕</span>
+        <div style="font-size:.83em; text-align:center; color:#555; line-height:1.7;">
+          Watt <strong>không phát minh</strong><br>
+          động cơ hơi nước.<br>
+          Thomas Newcomen làm trước ông —<br>
+          đã chạy từ 1712.
+        </div>
+        <div class="bubble" style="font-size:.78em;">"Thứ này chạy được, nhưng chạy kiểu đó thì tốn than kinh khủng lắm..."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cải tiến: buồng ngưng -->
+  <div class="panel bg-orange">
+    <div class="pi pi-tall">
+      <div class="nar nar-orange">Cải tiến thay đổi tất cả</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">💡⚙️</span>
+        <div style="font-size:.83em; text-align:center; color:#784212; line-height:1.7;">
+          Thêm <strong>buồng ngưng riêng</strong> —<br>
+          hơi nước ngưng tụ ở buồng lạnh<br>riêng thay vì làm nguội xi-lanh.
+        </div>
+        <div style="background:#fad7a0; border:2px solid #d35400; border-radius:8px; padding:6px; text-align:center; font-size:.82em; font-weight:700; color:#784212;">
+          Hiệu suất tăng <span style="font-size:1.4em; color:#e74c3c;">×4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marketing mã lực -->
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Marketing từ thế kỷ 18</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🐎💰</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Watt tự đặt đơn vị <strong>"mã lực"</strong> (HP)<br>
+          để so với ngựa kéo khi bán hàng.
+        </div>
+        <div class="bubble" style="font-size:.78em; border-color:#d4ac0d; background:#fef9e7; color:#7d6608;">"1 HP hơi cao hơn ngựa thật một chút... để khách thấy rõ lợi thế của máy."</div>
+        <div style="font-size:.78em; text-align:center; color:#999; font-style:italic;">Đơn vị Watt (W) mang tên ông đến tận nay.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     CƠ NĂNG
+══════════════════════════════════════ -->
+<div class="ch-div">⚡ CƠ NĂNG: ĐỘNG NĂNG & THẾ NĂNG ⚡</div>
+
+<div class="row">
+
+  <!-- Động năng -->
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="nar nar-red">Động năng — Wđ = ½mv²</div>
+      <div class="scene" style="gap:20px; align-items:center;">
+        <div style="text-align:center;">
+          <span class="fig">🚗</span>
+          <div style="font-size:.8em; margin-top:6px; font-weight:700; color:#c0392b;">50 km/h</div>
+          <div class="danger-bar" style="margin-top:6px; width:120px;">
+            <div class="danger-fill" style="width:25%;">25%</div>
+          </div>
+        </div>
+        <div style="font-size:.85em; text-align:center; color:#c0392b; font-weight:700;">VS</div>
+        <div style="text-align:center;">
+          <span class="fig">🚗</span>
+          <div style="font-size:.8em; margin-top:6px; font-weight:700; color:#922b21;">100 km/h</div>
+          <div class="danger-bar" style="margin-top:6px; width:120px;">
+            <div class="danger-fill" style="width:100%;">100%</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:.82em; text-align:center; color:#c0392b; font-weight:700; line-height:1.6;">
+        Vận tốc gấp đôi → động năng gấp <span style="font-size:1.3em;">BỐN</span><br>
+        100 km/h không phải gấp đôi nguy hiểm — mà gấp bốn.
+      </div>
+      <div class="cap">Đó là lý do giảm tốc độ là biện pháp an toàn giao thông hiệu quả nhất.</div>
+    </div>
+  </div>
+
+  <!-- Thế năng -->
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Thế năng trọng trường</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div class="formula">Wt = mgh</div>
+        <div style="font-size:3em; text-align:center;">💧⬇️⚡</div>
+        <div style="font-size:.8em; text-align:center; color:#1a5276; line-height:1.7;">
+          Đập thủy điện: <strong>tích trữ</strong><br>
+          thế năng của nước ở độ cao h.<br>
+          Nước rơi xuống →<br>
+          chuyển thành động năng →<br>
+          quay tuabin → điện.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chuyển hóa năng lượng -->
+<div class="row">
+  <div class="panel bg-orange">
+    <div class="pi pi-short">
+      <div class="nar nar-orange">Chuyển hóa năng lượng — luôn bảo toàn</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="e-flow">
+          <div class="e-box">Thế năng</div>
+          <div class="e-arrow">→</div>
+          <div class="e-box">Động năng</div>
+          <div class="e-arrow">→</div>
+          <div class="e-box">Điện năng</div>
+          <div class="e-arrow">→</div>
+          <div class="e-box">Nhiệt năng</div>
+        </div>
+        <div style="font-size:.8em; text-align:center; color:#784212; line-height:1.6;">
+          Năng lượng không tự sinh ra, không tự mất đi.<br>Chỉ chuyển từ dạng này sang dạng khác.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     BA NGƯỜI, MỘT ĐỊNH LUẬT
+══════════════════════════════════════ -->
+<div class="ch-div">🔬 BA NGƯỜI — MỘT ĐỊNH LUẬT — THẬP NIÊN 1840 🔬</div>
+
+<!-- Julius Mayer -->
+<div class="row">
+
+  <!-- Trên tàu -->
+  <div class="panel bg-blue">
+    <div class="pi pi-tall">
+      <div class="nar nar-blue">Julius Mayer — Trên tàu đến Đông Ấn, 1840</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">⛵🩸</span>
+        <div style="font-size:.83em; text-align:center; color:#1a5276; line-height:1.7;">
+          Mayer — bác sĩ tàu người Đức —<br>
+          nhận ra máu thủy thủ ở <strong>vùng nhiệt đới</strong><br>
+          đỏ hơn ở châu Âu lạnh.
+        </div>
+        <div class="thought" style="font-size:.78em;">
+          Cơ thể cần đốt ít nhiệt hơn<br>khi trời đã nóng...<br>Nhiệt = năng lượng!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gửi bài bị từ chối -->
+  <div class="panel bg-red">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Gửi bài đến Annalen der Physik</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">📄❌</span>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; line-height:1.7;">
+          Bài báo trình bày định luật<br>
+          bảo toàn năng lượng.
+        </div>
+        <div class="bubble bubble-red" style="font-size:.8em;">"Bài từ chối — không đủ toán học."</div>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; font-style:italic; line-height:1.6;">
+          — Ban biên tập tạp chí vật lý<br>
+          danh giá nhất nước Đức
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trại tâm thần -->
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Hậu quả</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">🏥</span>
+        <div style="font-size:.83em; color:#f1948a; text-align:center; line-height:1.7;">
+          Mayer sụp đổ.<br>
+          Bị đưa vào <strong style="color:#e74c3c;">trại tâm thần.</strong>
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.78em;">"Công trình của tôi đúng. Tôi biết là đúng."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Joule và Helmholtz cùng đến -->
+<div class="row">
+
+  <!-- Joule từ hướng khác -->
+  <div class="panel bg-orange">
+    <div class="pi">
+      <div class="nar nar-orange">Cùng lúc đó — James Joule</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig">🍺⚡</span>
+        <div style="font-size:.82em; text-align:center; color:#784212; line-height:1.7;">
+          Thợ làm bia người Anh.<br>
+          Đo nhiệt do dòng điện tạo ra<br>trong xưởng bia của gia đình.<br>
+          → Đến cùng kết luận.<br>
+          <strong>Từ hướng hoàn toàn khác.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Helmholtz từ toán học -->
+  <div class="panel bg-purple">
+    <div class="pi">
+      <div class="nar nar-purple">Cùng lúc đó — Hermann von Helmholtz</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig">📐∑</span>
+        <div style="font-size:.82em; text-align:center; color:#6c3483; line-height:1.7;">
+          Từ toán học thuần túy.<br>
+          Chứng minh bảo toàn năng lượng<br>
+          cho nhiều loại lực.<br>
+          → Cùng kết luận.<br>
+          <strong>Từ hướng hoàn toàn khác.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tóm tắt -->
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">Thập niên 1840 — ba người, ba hướng</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:.82em; line-height:1.8; color:#5d4037;">
+          <strong>Mayer:</strong> màu máu thủy thủ → nhiệt<br>
+          <strong>Joule:</strong> điện → nhiệt → cơ học<br>
+          <strong>Helmholtz:</strong> toán học → tổng quát
+        </div>
+        <div style="background:#ffd700; border:2px solid #111; border-radius:6px; padding:6px 10px; font-size:.85em; font-weight:700; text-align:center; color:#5d4037;">
+          Ba người đi đến<br>một chân lý duy nhất —<br>độc lập với nhau.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mayer được minh oan -->
+<div class="row">
+
+  <!-- Dòng thời gian -->
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="nar">Câu chuyện của Mayer tiếp tục...</div>
+      <div class="scene scene-col" style="gap:6px;">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-year">1842</div>
+            <div class="tl-text">Mayer gửi bài — bị từ chối, bị chế giễu</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">1844</div>
+            <div class="tl-text">Joule công bố, được chú ý hơn</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">185x</div>
+            <div class="tl-text">Mayer trong trại tâm thần</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year" style="background:#27ae60;">1870</div>
+            <div class="tl-text" style="color:#145a32; font-weight:700;">Hội Hoàng gia Anh trao huy chương Copley — vì cùng công trình đó</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Huy chương -->
+  <div class="panel bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">25 năm sau</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">🏅</span>
+        <div style="color:#ffd700; font-family:'Bangers',sans-serif; font-size:1.5em; text-align:center; letter-spacing:2px;">ĐÃ ĐÚNG TỪ ĐẦU</div>
+        <div style="font-size:.83em; color:#aaa; text-align:center; line-height:1.7;">
+          Mayer sống đủ lâu để<br>
+          chứng kiến mình được ghi nhận.
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.78em;">"Tôi không cần bạn bè. Tôi cần sự thật được thừa nhận."</div>
+      </div>
+      <div class="cap" style="color:#85c1e9;">Bị trại tâm thần 10 năm. Huy chương Hoàng gia Anh cùng công trình đó. Khoa học chậm.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ CLOSING ══ -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN III —</div>
+  <div class="closing-lines">
+    Watt không phát minh động cơ hơi nước — ông chỉ cải tiến nó, rồi đặt đơn vị HP hơi cao hơn thật để bán hàng.<br>
+    Vận tốc gấp đôi — nguy hiểm gấp bốn, không phải gấp đôi.<br>
+    Ba người ở ba nơi, ba hướng khác nhau, cùng tìm ra định luật bảo toàn năng lượng trong một thập niên.<br>
+    Mayer: từ chối → trại tâm thần → huy chương Hoàng gia. Khoa học rất chậm nhận ra mình sai.
+  </div>
+  <div class="closing-next">➤ PHẦN IV: NHIỆT HỌC ➤</div>
+</div>
+
+</div>
+</body>
+</html>

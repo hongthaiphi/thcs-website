@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Điện Học</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0820; font-family: 'Comic Neue','Comic Sans MS',cursive; padding: 24px 16px; color: #111; }
+.comic-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+
+.cover { background: #0d0820; border: 5px solid #f1c40f; padding: 32px 24px; text-align: center; position: relative; overflow: hidden; margin-bottom: 4px; }
+.cover::after { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(241,196,15,.06) 8px, rgba(241,196,15,.06) 16px); pointer-events:none; }
+.cover-series { font-family:'Bangers',sans-serif; color:#f1c40f; letter-spacing:6px; font-size:1em; margin-bottom:6px; }
+.cover-title  { font-family:'Bangers',sans-serif; color:#fff; font-size:4em; line-height:.9; text-shadow:4px 4px 0 #d4ac0d, 8px 8px 0 #7d6608; letter-spacing:2px; margin-bottom:10px; }
+.cover-sub    { color:#f9e79f; font-weight:700; font-size:1.05em; letter-spacing:1px; }
+
+.ch-div { background:#0d0820; color:#f1c40f; font-family:'Bangers',sans-serif; font-size:1.25em; letter-spacing:4px; text-align:center; padding:10px 16px; margin:4px 0; }
+.row { display:flex; gap:4px; }
+.panel { border:3px solid #111; background:#fff; position:relative; overflow:hidden; flex:1; }
+.panel-2x { flex:2; }
+.panel-3x { flex:3; }
+
+.bg-dark   { background:#0d0820; color:#fff; }
+.bg-yellow { background:#fef9e7; }
+.bg-blue   { background:#ebf5fb; }
+.bg-red    { background:#fdedec; }
+.bg-orange { background:#fef0e7; }
+.bg-green  { background:#eafaf1; }
+.bg-gray   { background:#f2f3f4; }
+
+.pi       { padding:12px; display:flex; flex-direction:column; gap:8px; min-height:190px; height:100%; }
+.pi-tall  { min-height:280px; }
+.pi-short { min-height:130px; }
+
+.nar         { background:#ffd700; border:2px solid #111; padding:4px 8px; font-size:.78em; font-weight:700; flex-shrink:0; }
+.nar-yellow  { background:#f9e79f; }
+.nar-blue    { background:#aed6f1; }
+.nar-red     { background:#f1948a; color:#fff; }
+.nar-dark    { background:#111; color:#ffd700; }
+.nar-orange  { background:#fad7a0; }
+.nar-green   { background:#a9dfbf; }
+
+.scene     { flex:1; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+.scene-col { flex-direction:column; }
+
+.fig    { font-size:3em;   line-height:1; display:block; }
+.fig-lg { font-size:4.5em; line-height:1; display:block; }
+.fig-xl { font-size:6em;   line-height:1; display:block; }
+
+.bubble { background:#fff; border:2.5px solid #111; border-radius:18px; padding:7px 11px; font-weight:700; font-size:.82em; line-height:1.35; position:relative; max-width:95%; }
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px; left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-dark { background:#0d0820; color:#f1c40f; border-color:#f1c40f; }
+.bubble-dark::after  { border-top-color:#f1c40f; }
+.bubble-dark::before { border-top-color:#0d0820; }
+.bubble-top::after  { bottom:auto; top:-13px; left:18px; border-top:0; border-bottom-color:#111; }
+.bubble-top::before { bottom:auto; top:-9px; left:21px; border-top:0; border-bottom-color:#fff; z-index:1; }
+
+.thought { background:#eaf4fb; border:2.5px solid #111; border-radius:50%; padding:10px 16px; font-weight:700; font-size:.82em; line-height:1.4; text-align:center; position:relative; }
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+.formula       { background:#fef9e7; border:2px solid #f1c40f; border-radius:8px; padding:7px 14px; font-size:1.2em; font-weight:700; text-align:center; color:#7d6608; flex-shrink:0; }
+.formula-blue  { background:#ebf5fb; border-color:#2980b9; color:#1a5276; }
+.formula-red   { background:#fdedec; border-color:#c0392b; color:#7b241c; }
+.formula-green { background:#eafaf1; border-color:#27ae60; color:#145a32; }
+
+.sfx    { font-family:'Bangers',sans-serif; font-size:2.2em; color:#f1c40f; text-shadow:2px 2px 0 #111; transform:rotate(-4deg); display:inline-block; letter-spacing:2px; }
+.sfx-r  { color:#c0392b; }
+.sfx-b  { color:#2980b9; }
+.sfx-lg { font-size:3em; }
+.sfx-sm { font-size:1.4em; }
+
+.cap { background:#111; color:#fff; padding:5px 9px; font-size:.76em; font-style:italic; flex-shrink:0; margin-top:auto; }
+
+.timeline { display:flex; flex-direction:column; gap:6px; }
+.tl-item  { display:flex; gap:8px; align-items:flex-start; font-size:.8em; }
+.tl-year  { background:#f1c40f; color:#0d0820; font-weight:700; padding:2px 6px; border-radius:4px; flex-shrink:0; min-width:46px; text-align:center; }
+.tl-bad   { background:#e74c3c; color:#fff; }
+.tl-gold  { background:#27ae60; color:#fff; }
+.tl-text  { color:#333; line-height:1.5; }
+
+/* Lightning bolt decoration */
+.bolt { font-family:'Bangers',sans-serif; color:#f1c40f; font-size:2em; text-shadow:1px 1px 0 #d4ac0d; }
+
+.closing { background:#0d0820; border:3px solid #111; color:#fff; text-align:center; padding:28px 20px; margin-top:4px; }
+.closing-title { font-family:'Bangers',sans-serif; color:#f1c40f; font-size:1.6em; letter-spacing:4px; margin-bottom:12px; }
+.closing-lines { color:#f9e79f; font-size:.88em; line-height:2; margin-bottom:14px; }
+.closing-next  { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.1em; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN VII ✦</div>
+  <div class="cover-title">ĐIỆN<br>HỌC</div>
+  <div class="cover-sub">Tại sao tóc dựng đứng khi chải bằng lược nhựa?</div>
+</div>
+
+<!-- HOOK: TĨNH ĐIỆN -->
+<div class="ch-div">⚡ TĨNH ĐIỆN — KHI TÓC MUỐN BAY ⚡</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">Sáng sớm, chải đầu bằng lược nhựa...</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-xl">💇⚡</span>
+        <div style="font-size:.85em; text-align:center; color:#5d4037; line-height:1.7;">
+          Electron chuyển từ <strong>tóc sang lược</strong>.<br>
+          Tóc mất electron → mang điện dương.<br>
+          Các sợi tóc cùng dấu → <strong>đẩy nhau</strong>.
+        </div>
+        <div class="sfx sfx-sm" style="color:#f1c40f; text-align:center;">TĨNH ĐIỆN!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">Điện tích — nguyên tắc cơ bản</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div style="font-size:2.5em; text-align:center;">➕ ➖</div>
+        <div style="color:#f9e79f; font-size:.83em; text-align:center; line-height:1.8;">
+          Cùng dấu: <strong style="color:#f1948a;">đẩy nhau</strong><br>
+          Khác dấu: <strong style="color:#82e0aa;">hút nhau</strong><br><br>
+          Hạt mang điện âm: <strong style="color:#aed6f1;">electron</strong><br>
+          Hạt mang điện dương: <strong style="color:#f9e79f;">proton</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Định luật Coulomb</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula formula-blue" style="font-size:.95em;">F = k × q₁q₂ / r²</div>
+        <div style="font-size:.8em; color:#1a5276; text-align:center; line-height:1.8;">
+          Lực tỷ lệ thuận tích hai điện tích.<br>
+          Tỷ lệ nghịch bình phương khoảng cách.<br><br>
+          Khoảng cách gấp đôi → lực yếu đi 4 lần.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FRANKLIN -->
+<div class="ch-div">🪁 BENJAMIN FRANKLIN — 1706–1790 🪁</div>
+<div class="row">
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Philadelphia, 1752 — Giông bão</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-xl">🪁⚡🗝️</span>
+        <div style="color:#f9e79f; font-size:.83em; text-align:center; line-height:1.7;">
+          Franklin thả diều trong giông bão.<br>
+          Gắn chìa khóa ở cuối dây.<br>
+          Sét đánh → điện truyền xuống dây.<br>
+          <strong style="color:#f1c40f;">"Sét là điện!"</strong>
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.78em;">Thí nghiệm này có thể chết. Franklin may mắn sống sót.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Sau thí nghiệm — cột thu lôi</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🏠⚡🌩️</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Từ phát hiện đó, Franklin<br>đề xuất <strong>cột thu lôi</strong> —<br>dẫn điện sét xuống đất an toàn.
+        </div>
+        <div style="background:#fef9e7; border:2px solid #d4ac0d; border-radius:6px; padding:6px; font-size:.8em; font-weight:700; text-align:center; color:#7d6608; line-height:1.5;">
+          Một trong những thiết bị<br>cứu sống nhiều mạng người nhất<br>trong lịch sử.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-orange">
+    <div class="pi pi-tall">
+      <div class="nar nar-orange">Sai sót còn lại đến tận nay</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">➕→➖</span>
+        <div style="font-size:.83em; text-align:center; color:#784212; line-height:1.7;">
+          Franklin đặt quy ước:<br>
+          <strong>Dòng điện chảy từ (+) sang (−)</strong>
+        </div>
+        <div class="bubble" style="font-size:.78em; background:#fdedec; border-color:#e74c3c; color:#7b241c;">"Ngược chiều electron thật... nhưng quy ước đã lan khắp thế giới trước khi ai phát hiện ra sai."</div>
+        <div style="font-size:.78em; color:#555; text-align:center; font-style:italic;">Electron được phát hiện năm 1897 — 107 năm sau Franklin. Quy ước giữ nguyên.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OHM -->
+<div class="ch-div">🔌 GEORG SIMON OHM — 1789–1854 🔌</div>
+<div class="row">
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Định luật Ohm — I = U/R</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div class="formula" style="font-size:1.5em;">I = U / R</div>
+        <div style="font-size:.82em; color:#1a5276; text-align:center; line-height:1.8;">
+          I — cường độ dòng điện (A)<br>
+          U — hiệu điện thế (V)<br>
+          R — điện trở (Ω)
+        </div>
+        <div style="font-size:.82em; text-align:center; color:#555; line-height:1.6;">
+          Tăng điện áp → dòng mạnh hơn.<br>
+          Tăng điện trở → dòng yếu hơn.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="nar">Công bố 1827 — và hậu quả</div>
+      <div class="scene" style="gap:16px; align-items:flex-start; flex-wrap:nowrap;">
+        <div style="flex:1;">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-year">1827</div>
+              <div class="tl-text">Ohm công bố định luật</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year tl-bad">1828</div>
+              <div class="tl-text">Bộ GD Phổ: lý thuyết "phi thực tế" → ông mất việc dạy học</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year tl-bad">1828–41</div>
+              <div class="tl-text">Sống trong nghèo túng 13 năm</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year tl-gold">1841</div>
+              <div class="tl-text">Hội Hoàng gia Anh trao huy chương Copley — vì cùng công trình đó</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year tl-gold">1843</div>
+              <div class="tl-text">Được bổ nhiệm giáo sư đại học</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1; text-align:center; align-self:center;">
+          <span class="fig-lg">🏅📚</span>
+          <div style="font-size:.82em; margin-top:8px; color:#555; font-style:italic; line-height:1.6;">
+            Câu chuyện cổ điển:<br>
+            khoa học chậm hơn<br>nhận ra mình sai.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CÔNG SUẤT ĐIỆN -->
+<div class="ch-div">🔥 CÔNG SUẤT & NHIỆT ĐIỆN 🔥</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">Công và công suất điện</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula" style="font-size:1.2em;">P = U × I</div>
+        <div style="font-size:.82em; text-align:center; color:#555; line-height:1.8;">
+          P — công suất (W)<br>
+          U — điện áp (V)<br>
+          I — cường độ (A)<br><br>
+          Bóng đèn 100W ở 220V:<br>
+          I = 100/220 ≈ 0,45 A
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-red">
+    <div class="pi">
+      <div class="nar nar-red">Định luật Joule–Lenz — nhiệt tỏa ra</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div class="formula formula-red">Q = I² × R × t</div>
+        <div style="font-size:.82em; text-align:center; color:#7b241c; line-height:1.7;">
+          Điện trở cao + dòng lớn → tỏa nhiệt mạnh.
+        </div>
+        <div style="font-size:2em; text-align:center;">🍳🫖👔</div>
+        <div style="font-size:.78em; text-align:center; color:#7b241c; line-height:1.6;">
+          Bếp điện, ấm đun, bàn là —<br>tất cả dùng nguyên lý này.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-green">
+    <div class="pi">
+      <div class="nar nar-green">Cầu chì — bảo vệ mạch điện</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">⚡💥🔌</span>
+        <div style="font-size:.82em; text-align:center; color:#145a32; line-height:1.7;">
+          Khi dòng điện quá lớn<br>→ cầu chì <strong>nóng chảy trước</strong><br>→ cắt mạch<br>→ bảo vệ thiết bị.
+        </div>
+        <div style="background:#d5f5e3; border:2px solid #27ae60; border-radius:6px; padding:5px; font-size:.78em; font-weight:700; text-align:center; color:#1e8449; line-height:1.5;">
+          Nguyên lý: Joule–Lenz áp dụng có chủ ý.<br>Cầu chì chịu nhiệt kém hơn thiết bị → chảy trước.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN VII —</div>
+  <div class="closing-lines">
+    Franklin chứng minh sét là điện bằng diều và chìa khóa — thí nghiệm có thể chết người, ông may mắn sống sót.<br>
+    Franklin cũng đặt quy ước chiều dòng điện sai (ngược electron) — nhưng quy ước lan khắp thế giới trước khi ai biết, giữ nguyên đến nay.<br>
+    Ohm mất việc vì định luật "phi thực tế" — 13 năm sau, Hội Hoàng gia Anh trao huy chương vì cùng công trình đó.<br>
+    Bếp điện, bàn là, ấm đun, cầu chì — tất cả là Q = I²Rt, cố ý hoặc vô tình.
+  </div>
+  <div class="closing-next">➤ PHẦN VIII: ĐIỆN TỪ ➤</div>
+</div>
+
+</div>
+</body>
+</html>

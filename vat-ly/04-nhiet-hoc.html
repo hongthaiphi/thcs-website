@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Nhiệt Học</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0c1a0c; font-family: 'Comic Neue','Comic Sans MS',cursive; padding: 24px 16px; color: #111; }
+.comic-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+
+.cover { background: #051005; border: 5px solid #27ae60; padding: 32px 24px; text-align: center; position: relative; overflow: hidden; margin-bottom: 4px; }
+.cover::after { content:''; position:absolute; inset:0; background: repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(39,174,96,.05) 8px, rgba(39,174,96,.05) 16px); pointer-events:none; }
+.cover-series { font-family:'Bangers',sans-serif; color:#27ae60; letter-spacing:6px; font-size:1em; margin-bottom:6px; }
+.cover-title  { font-family:'Bangers',sans-serif; color:#fff; font-size:4em; line-height:.9; text-shadow:4px 4px 0 #1e8449, 8px 8px 0 #0e4024; letter-spacing:2px; margin-bottom:10px; }
+.cover-sub    { color:#82e0aa; font-weight:700; font-size:1.05em; letter-spacing:1px; }
+
+.ch-div { background: #051005; color: #27ae60; font-family:'Bangers',sans-serif; font-size:1.25em; letter-spacing:4px; text-align:center; padding:10px 16px; margin:4px 0; }
+.row { display: flex; gap: 4px; }
+.panel { border: 3px solid #111; background: #fff; position: relative; overflow: hidden; flex: 1; }
+.panel-2x { flex: 2; }
+.panel-3x { flex: 3; }
+.panel-07  { flex: .75; }
+
+.bg-dark   { background: #051005; color: #fff; }
+.bg-yellow { background: #fef9e7; }
+.bg-green  { background: #eafaf1; }
+.bg-teal   { background: #e8f8f5; }
+.bg-blue   { background: #ebf5fb; }
+.bg-red    { background: #fdedec; }
+.bg-orange { background: #fef0e7; }
+.bg-gray   { background: #f2f3f4; }
+
+.pi       { padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 190px; height: 100%; }
+.pi-tall  { min-height: 280px; }
+.pi-short { min-height: 130px; }
+.pi-xs    { min-height: 100px; }
+
+.nar        { background: #ffd700; border: 2px solid #111; padding: 4px 8px; font-size: .78em; font-weight: 700; flex-shrink: 0; }
+.nar-green  { background: #a9dfbf; }
+.nar-blue   { background: #aed6f1; }
+.nar-red    { background: #f1948a; color: #fff; }
+.nar-dark   { background: #111; color: #ffd700; }
+.nar-orange { background: #fad7a0; }
+.nar-teal   { background: #a2d9ce; }
+
+.scene     { flex: 1; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.scene-col { flex-direction: column; }
+
+.fig    { font-size: 3em;   line-height: 1; display: block; }
+.fig-lg { font-size: 4.5em; line-height: 1; display: block; }
+.fig-xl { font-size: 6em;   line-height: 1; display: block; }
+.fig-sm { font-size: 2em;   line-height: 1; display: block; }
+
+.bubble { background:#fff; border:2.5px solid #111; border-radius:18px; padding:7px 11px; font-weight:700; font-size:.82em; line-height:1.35; position:relative; max-width:95%; }
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px; left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-top::after  { bottom:auto; top:-13px; border-top:0; border-bottom-color:#111; }
+.bubble-top::before { bottom:auto; top:-9px;  border-top:0; border-bottom-color:#fff; z-index:1; }
+.bubble-dark { background:#051005; color:#ffd700; border-color:#ffd700; }
+.bubble-dark::after  { border-top-color:#ffd700; }
+.bubble-dark::before { border-top-color:#051005; }
+.bubble-green { background:#eafaf1; border-color:#27ae60; color:#145a32; }
+.bubble-green::after  { border-top-color:#27ae60; }
+.bubble-green::before { border-top-color:#eafaf1; }
+
+.thought { background:#eaf4fb; border:2.5px solid #111; border-radius:50%; padding:10px 16px; font-weight:700; font-size:.82em; line-height:1.4; text-align:center; position:relative; }
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+.formula       { background:#eafaf1; border:2px solid #27ae60; border-radius:8px; padding:7px 14px; font-size:1.1em; font-weight:700; text-align:center; color:#145a32; flex-shrink:0; }
+.formula-blue  { background:#ebf5fb; border-color:#2980b9; color:#1a5276; }
+.formula-red   { background:#fdedec; border-color:#c0392b; color:#7b241c; }
+
+.sfx    { font-family:'Bangers',sans-serif; font-size:2.2em; color:#c0392b; text-shadow:2px 2px 0 #111; transform:rotate(-4deg); display:inline-block; letter-spacing:2px; }
+.sfx-g  { color:#27ae60; }
+.sfx-sm { font-size:1.4em; }
+
+.cap { background:#111; color:#fff; padding:5px 9px; font-size:.76em; font-style:italic; flex-shrink:0; margin-top:auto; }
+
+.timeline { display:flex; flex-direction:column; gap:6px; }
+.tl-item  { display:flex; gap:8px; align-items:flex-start; font-size:.8em; }
+.tl-year  { background:#27ae60; color:#fff; font-weight:700; padding:2px 6px; border-radius:4px; flex-shrink:0; min-width:46px; text-align:center; }
+.tl-text  { color:#333; line-height:1.5; }
+.tl-bad   { background:#e74c3c; }
+.tl-gold  { background:#d4ac0d; }
+
+.heat-bar { display:flex; align-items:center; gap:8px; font-size:.78em; }
+.heat-fill { height:18px; border-radius:3px; display:flex; align-items:center; padding:0 6px; font-weight:700; color:#fff; font-size:.85em; }
+
+.closing { background:#051005; border:3px solid #111; color:#fff; text-align:center; padding:28px 20px; margin-top:4px; }
+.closing-title { font-family:'Bangers',sans-serif; color:#27ae60; font-size:1.6em; letter-spacing:4px; margin-bottom:12px; }
+.closing-lines { color:#82e0aa; font-size:.88em; line-height:2; margin-bottom:14px; }
+.closing-next  { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.1em; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN IV ✦</div>
+  <div class="cover-title">NHIỆT<br>HỌC</div>
+  <div class="cover-sub">Tại sao cà phê nguội đi nhưng không bao giờ tự nóng trở lại?</div>
+</div>
+
+<!-- HOOK -->
+<div class="ch-div">☕ CÀ PHÊ NGUỘI — HƯỚNG CỦA THỜI GIAN ☕</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">Sáng sớm. Bạn pha cà phê, rồi quên mất.</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-xl">☕</span>
+        <div style="font-size:.85em; text-align:center; color:#5d4037; line-height:1.7;">
+          Một giờ sau, ly cà phê nguội.<br>
+          Bạn nghĩ: <em>"Tự nóng lại thì hay biết mấy."</em>
+        </div>
+        <div class="bubble" style="font-size:.8em;">Nhưng nó sẽ không bao giờ tự nóng trở lại.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">Lý do: hướng của thời gian trong vật lý</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <div style="font-size:2.5em; text-align:center;">🔥 → ❄️</div>
+        <div style="color:#82e0aa; font-size:.85em; text-align:center; line-height:1.7;">
+          Nhiệt truyền tự nhiên từ <strong style="color:#ffd700;">nóng sang lạnh.</strong><br>
+          Không bao giờ ngược lại.
+        </div>
+        <div style="color:#aaa; font-size:.8em; text-align:center; line-height:1.6;">
+          Đun nước sôi: dễ.<br>
+          Làm nước tự nguội thành đá:<br>phải có máy, tốn điện.
+        </div>
+      </div>
+      <div class="cap" style="color:#82e0aa;">Đây không phải quy tắc — đây là định hướng của mọi quá trình tự nhiên.</div>
+    </div>
+  </div>
+
+  <div class="panel bg-green">
+    <div class="pi">
+      <div class="nar nar-green">Công thức nhiệt lượng</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div class="formula">Q = m × c × Δt</div>
+        <div style="font-size:.8em; color:#145a32; line-height:1.8; text-align:center;">
+          Q — nhiệt lượng (J)<br>
+          m — khối lượng (kg)<br>
+          c — nhiệt dung riêng (J/kg·K)<br>
+          Δt — độ thay đổi nhiệt độ (K)
+        </div>
+        <div style="background:#d5f5e3; border:2px solid #27ae60; border-radius:6px; padding:6px; font-size:.8em; font-weight:700; text-align:center; color:#145a32;">
+          Nước: c = 4.200 J/kg·K<br>
+          Cao nhất trong các chất thông thường
+        </div>
+      </div>
+      <div class="cap">Vì c của nước cao → đại dương tích trữ nhiệt khổng lồ → điều hòa khí hậu Trái Đất.</div>
+    </div>
+  </div>
+</div>
+
+<!-- JOULE -->
+<div class="ch-div">🍺 JAMES JOULE — 1818–1889 🍺</div>
+<div class="row">
+  <div class="panel bg-orange">
+    <div class="pi pi-tall">
+      <div class="nar nar-orange">Manchester, 1843 — thợ làm bia nghiệp dư</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-lg">🍺⚡🌡️</span>
+        <div style="font-size:.83em; text-align:center; color:#784212; line-height:1.7;">
+          Joule đo nhiệt do dòng điện<br>tạo ra — <strong>trong xưởng bia</strong><br>của gia đình ông.
+        </div>
+        <div class="thought" style="font-size:.78em;">Điện → cơ học → nhiệt...<br>Chúng phải quy đổi ra nhau được!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Hội nghị Anh, 1843</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-lg">👨‍🏫😴😴</span>
+        <div style="font-size:.83em; text-align:center; color:#555; line-height:1.7;">
+          Joule trình bày phát hiện.<br>
+          Hội trường đầy các nhà khoa học.
+        </div>
+        <div class="sfx" style="font-size:1.5em; color:#999;">...zzzzzz...</div>
+        <div style="font-size:.82em; text-align:center; color:#c0392b; font-weight:700;">Người ta đứng dậy đi ra ngoài<br>khi ông đang nói.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Nhưng có một người ở lại</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-lg">👦✋</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          William Thomson — 22 tuổi.<br>
+          Người duy nhất không ra ngoài.<br>
+          Người duy nhất chú ý.
+        </div>
+        <div class="bubble" style="font-size:.8em; border-color:#27ae60; background:#eafaf1; color:#145a32;">"Đây là công trình quan trọng nhất tôi từng nghe."</div>
+      </div>
+      <div class="cap">Hai người trở thành bạn thân và hợp tác nhiều năm. Thomson sau này đặt tên cho đơn vị nhiệt độ Kelvin.</div>
+    </div>
+  </div>
+</div>
+
+<!-- BA HÌNH THỨC TRUYỀN NHIỆT -->
+<div class="ch-div">🌡️ BA HÌNH THỨC TRUYỀN NHIỆT 🌡️</div>
+<div class="row">
+  <!-- Dẫn nhiệt -->
+  <div class="panel bg-teal">
+    <div class="pi">
+      <div class="nar nar-teal">① Dẫn nhiệt — qua tiếp xúc</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div style="font-size:2.5em; text-align:center;">🦶🧱🦶🪵</div>
+        <div style="font-size:.82em; color:#145a32; text-align:center; line-height:1.7;">
+          Sàn gạch và sàn gỗ cùng nhiệt độ.<br>
+          Chân chạm gạch lạnh hơn —<br>
+          gạch <strong>dẫn nhiệt nhanh hơn</strong>,<br>
+          rút nhiệt từ chân nhanh hơn.
+        </div>
+        <div style="background:#d1f2eb; border:2px solid #27ae60; border-radius:6px; padding:6px; font-size:.8em; font-weight:700; text-align:center; color:#145a32;">
+          🧣 Áo len <strong>không sinh nhiệt</strong><br>— chỉ giữ lớp không khí tĩnh,<br>chặn nhiệt cơ thể thoát ra.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Đối lưu -->
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">② Đối lưu — qua dòng chất lưu</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div style="font-size:2.5em; text-align:center;">🌊☀️🏖️</div>
+        <div style="font-size:.82em; color:#1a5276; text-align:center; line-height:1.7;">
+          Ban ngày: đất nóng nhanh hơn biển.<br>
+          Không khí trên đất nóng → nhẹ → nổi lên.<br>
+          Không khí mát từ biển thổi vào.<br>
+          <strong>→ Gió biển ban ngày thổi vào bờ.</strong>
+        </div>
+        <div style="font-size:1.5em; text-align:center;">
+          🌅→&nbsp;🌡️↑&nbsp;→&nbsp;💨→&nbsp;🏠
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bức xạ -->
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">③ Bức xạ — qua sóng điện từ</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div style="font-size:2.5em; text-align:center;">☀️〰〰〰🌍</div>
+        <div style="font-size:.82em; color:#5d4037; text-align:center; line-height:1.7;">
+          Mặt Trời truyền nhiệt qua<br>
+          <strong>150 triệu km chân không</strong><br>
+          bằng bức xạ điện từ —<br>
+          không cần môi trường.
+        </div>
+        <div style="background:#fef9e7; border:2px solid #d4ac0d; border-radius:6px; padding:5px; font-size:.78em; text-align:center; color:#7d6608; font-weight:700;">
+          Stefan-Boltzmann: công thức<br>tính bức xạ nhiệt từ vật thể
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOLTZMANN -->
+<div class="ch-div">⚛️ LUDWIG BOLTZMANN — 1844–1906 ⚛️</div>
+<div class="row">
+  <div class="panel panel-2x bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Cuộc chiến đơn độc — nguyên tử có thật không?</div>
+      <div class="scene" style="gap:20px;">
+        <div style="text-align:center;">
+          <span class="fig-lg">⚛️</span>
+          <div class="bubble bubble-dark" style="font-size:.8em; margin-top:12px;">"Nguyên tử tồn tại thật. Tôi có thể chứng minh bằng toán học."</div>
+        </div>
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">🧑‍🔬</span>
+          <div class="bubble" style="font-size:.8em; margin-top:12px; background:#fdedec; border-color:#c0392b; color:#7b241c;">"Vô nghĩa. Không ai nhìn thấy nguyên tử bao giờ!"</div>
+          <div style="color:#f1948a; font-size:.78em; margin-top:8px; text-align:center;">— Hầu hết nhà khoa học châu Âu thế kỷ 19</div>
+        </div>
+      </div>
+      <div class="cap" style="color:#82e0aa;">Boltzmann tranh luận suốt 30 năm. Kiệt sức. Không ai chịu nghe.</div>
+    </div>
+  </div>
+
+  <div class="panel bg-red">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">1906 — kỳ nghỉ dưỡng cùng gia đình</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-xl">💔</span>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; line-height:1.7;">
+          Boltzmann tự tử năm 1906.<br>
+          Kiệt sức vì tranh luận.
+        </div>
+        <div style="background:#fdedec; border:2px solid #e74c3c; border-radius:8px; padding:8px; font-size:.8em; color:#7b241c; line-height:1.6; text-align:center;">
+          <strong>Ông không biết:</strong><br>
+          Einstein đã công bố giải thích<br>toán học chuyển động Brown — 1905.<br>
+          Jean Perrin sẽ xác nhận bằng<br>thực nghiệm — 1908.
+        </div>
+      </div>
+      <div class="cap">Boltzmann đúng hoàn toàn. Chỉ không kịp biết.</div>
+    </div>
+  </div>
+</div>
+
+<!-- NỞ VÌ NHIỆT + NHIỆT KẾ -->
+<div class="ch-div">🌡️ NỞ VÌ NHIỆT & THANG ĐO NHIỆT ĐỘ 🌡️</div>
+<div class="row">
+  <div class="panel bg-green">
+    <div class="pi">
+      <div class="nar nar-green">Nở vì nhiệt — ứng dụng thực tế</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:2.5em; text-align:center;">🚂🌉</div>
+        <div style="font-size:.82em; color:#145a32; line-height:1.8; text-align:center;">
+          Đường ray xe lửa: có <strong>khe hở</strong><br>để giãn nở khi hè.<br><br>
+          Cầu thép: có <strong>khớp giãn nở</strong><br>ở hai đầu cầu.
+        </div>
+        <div style="background:#d5f5e3; border:2px solid #27ae60; border-radius:6px; padding:5px; font-size:.8em; font-weight:700; text-align:center; color:#1e8449;">
+          Không có khe hở → mùa hè đường ray<br>cong vênh → tàu trật bánh.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi">
+      <div class="nar">Ai đặt thang nhiệt độ?</div>
+      <div class="scene" style="gap:16px; align-items:flex-start; flex-wrap:nowrap;">
+        <div style="flex:1; text-align:center;">
+          <span class="fig">🌡️</span>
+          <div style="font-size:.78em; margin-top:6px; line-height:1.7; color:#5d4037;">
+            <strong>Fahrenheit</strong><br>1714<br>
+            Nhiệt kế thủy ngân<br>đầu tiên<br><br>
+            Thang °F vẫn dùng<br>ở Mỹ đến nay.
+          </div>
+        </div>
+        <div style="font-size:2em; align-self:center; color:#aaa;">VS</div>
+        <div style="flex:1; text-align:center;">
+          <span class="fig">🌡️</span>
+          <div style="font-size:.78em; margin-top:6px; line-height:1.7; color:#1a5276;">
+            <strong>Celsius</strong><br>1742<br>
+            Thang 100 độ<br><br>
+            <span style="background:#f1948a; color:#fff; padding:1px 4px; border-radius:3px; font-size:.9em;">Ban đầu: ngược!</span><br>
+            0° = sôi<br>100° = đông
+          </div>
+        </div>
+      </div>
+      <div class="cap">Học trò của Celsius lật ngược thang đo sau khi ông mất — thành thang Celsius ta dùng hôm nay.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN IV —</div>
+  <div class="closing-lines">
+    Cà phê nguội là chiều mà thời gian chảy — không thể đảo ngược tự nhiên.<br>
+    Joule trình bày năm 1843, cả hội trường bỏ đi ra. Thomson 22 tuổi ở lại — hai người bạn, hai đơn vị vật lý.<br>
+    Boltzmann đúng về nguyên tử. Tranh luận 30 năm. Chết trước khi Einstein xác nhận ông đúng một năm.<br>
+    Celsius đặt thang nhiệt độ ngược — học trò lật lại sau khi ông mất.
+  </div>
+  <div class="closing-next">➤ PHẦN V: ÂM THANH ➤</div>
+</div>
+
+</div>
+</body>
+</html>

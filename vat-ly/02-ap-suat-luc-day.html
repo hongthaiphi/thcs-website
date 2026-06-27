@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Áp Suất & Lực Đẩy</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1c1008;
+  font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+  padding: 24px 16px;
+  color: #111;
+}
+
+.comic-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* COVER */
+.cover {
+  background: #0a1628;
+  border: 5px solid #3498db;
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(52,152,219,.05) 8px, rgba(52,152,219,.05) 16px
+  );
+  pointer-events: none;
+}
+.cover-series {
+  font-family: 'Bangers', sans-serif;
+  color: #3498db;
+  letter-spacing: 6px;
+  font-size: 1em;
+  margin-bottom: 6px;
+}
+.cover-title {
+  font-family: 'Bangers', sans-serif;
+  color: #fff;
+  font-size: 4em;
+  line-height: .95;
+  text-shadow: 4px 4px 0 #1a6fa8, 8px 8px 0 #0e3d5c;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.cover-sub {
+  color: #85c1e9;
+  font-weight: 700;
+  font-size: 1.05em;
+  letter-spacing: 1px;
+}
+
+/* CHAPTER DIVIDER */
+.ch-div {
+  background: #0a1628;
+  color: #3498db;
+  font-family: 'Bangers', sans-serif;
+  font-size: 1.3em;
+  letter-spacing: 4px;
+  text-align: center;
+  padding: 10px 16px;
+  margin: 4px 0;
+}
+
+/* ROW */
+.row { display: flex; gap: 4px; }
+
+/* PANEL */
+.panel {
+  border: 3px solid #111;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+.panel-2x { flex: 2; }
+.panel-3x { flex: 3; }
+.panel-07 { flex: .75; }
+
+.bg-dark   { background: #0a1628; color: #fff; }
+.bg-yellow { background: #fef9e7; }
+.bg-blue   { background: #ebf5fb; }
+.bg-teal   { background: #e8f8f5; }
+.bg-red    { background: #fdedec; }
+.bg-purple { background: #f5eef8; }
+
+/* PANEL INNER */
+.pi {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 180px;
+  height: 100%;
+}
+.pi-tall  { min-height: 270px; }
+.pi-short { min-height: 130px; }
+.pi-xs    { min-height: 100px; }
+
+/* NARRATION */
+.nar {
+  background: #ffd700;
+  border: 2px solid #111;
+  padding: 4px 8px;
+  font-size: .78em;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.nar-blue   { background: #aed6f1; }
+.nar-red    { background: #f1948a; color: #fff; }
+.nar-dark   { background: #111; color: #ffd700; }
+.nar-green  { background: #a9dfbf; }
+.nar-teal   { background: #a2d9ce; }
+.nar-purple { background: #d2b4de; }
+
+/* SCENE */
+.scene { flex: 1; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.scene-col { flex-direction: column; }
+
+/* FIGURES */
+.fig    { font-size: 3em;   line-height: 1; display: block; }
+.fig-lg { font-size: 4.5em; line-height: 1; display: block; }
+.fig-sm { font-size: 2em;   line-height: 1; display: block; }
+.fig-xl { font-size: 6em;   line-height: 1; display: block; }
+
+/* SPEECH BUBBLE */
+.bubble {
+  background: #fff;
+  border: 2.5px solid #111;
+  border-radius: 18px;
+  padding: 7px 11px;
+  font-weight: 700;
+  font-size: .82em;
+  line-height: 1.35;
+  position: relative;
+  max-width: 95%;
+}
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px;  left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-top::after  { bottom:auto; top:-13px; left:18px; border-top:0; border-bottom-color:#111; }
+.bubble-top::before { bottom:auto; top:-9px;  left:21px; border-top:0; border-bottom-color:#fff; z-index:1; }
+.bubble-dark { background:#0a1628; color:#ffd700; border-color:#ffd700; }
+.bubble-dark::after  { border-top-color:#ffd700; }
+.bubble-dark::before { border-top-color:#0a1628; }
+.bubble-big { font-size:1em; font-family:'Bangers',sans-serif; letter-spacing:1px; }
+
+/* THOUGHT BUBBLE */
+.thought {
+  background: #eaf4fb;
+  border: 2.5px solid #111;
+  border-radius: 50%;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: .82em;
+  line-height: 1.4;
+  text-align: center;
+  position: relative;
+}
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+/* FORMULA */
+.formula {
+  background: #ebf5fb;
+  border: 2px solid #2980b9;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 1.15em;
+  font-weight: 700;
+  text-align: center;
+  color: #1a5276;
+  flex-shrink: 0;
+}
+.formula-teal  { background: #e8f8f5; border-color: #1e8449; color: #145a32; }
+.formula-red   { background: #fdedec; border-color: #c0392b; color: #7b241c; }
+.formula-gold  { background: #fef9e7; border-color: #d4ac0d; color: #7d6608; }
+
+/* SFX */
+.sfx {
+  font-family: 'Bangers', sans-serif;
+  font-size: 2.2em;
+  color: #c0392b;
+  text-shadow: 2px 2px 0 #111;
+  transform: rotate(-4deg);
+  display: inline-block;
+  letter-spacing: 2px;
+}
+.sfx-b  { color: #2980b9; text-shadow: 2px 2px 0 #111; }
+.sfx-y  { color: #f39c12; }
+.sfx-g  { color: #27ae60; }
+.sfx-sm { font-size: 1.4em; }
+.sfx-lg { font-size: 3em; }
+
+/* CAPTION */
+.cap {
+  background: #111;
+  color: #fff;
+  padding: 5px 9px;
+  font-size: .76em;
+  font-style: italic;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* PRESSURE VISUAL */
+.pressure-box {
+  border: 2px solid #2980b9;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: .8em;
+  text-align: center;
+  background: #ebf5fb;
+  line-height: 1.7;
+}
+
+/* WATER COLUMN */
+.water-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  font-size: .75em;
+}
+.water-cell {
+  width: 40px;
+  background: #85c1e9;
+  border: 1px solid #2980b9;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  padding: 2px 0;
+}
+.water-deep { background: #1a5276; }
+
+/* CLOSING */
+.closing {
+  background: #0a1628;
+  border: 3px solid #111;
+  color: #fff;
+  text-align: center;
+  padding: 28px 20px;
+  margin-top: 4px;
+}
+.closing-title { font-family:'Bangers',sans-serif; color:#3498db; font-size:1.6em; letter-spacing:4px; margin-bottom:12px; }
+.closing-lines { color:#85c1e9; font-size:.88em; line-height:2; margin-bottom:14px; }
+.closing-next  { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.1em; letter-spacing:2px; }
+
+/* COMPARISON TABLE */
+.cmp { width: 100%; border-collapse: collapse; font-size: .78em; }
+.cmp th { background: #2980b9; color: #fff; padding: 4px 6px; }
+.cmp td { border: 1px solid #aed6f1; padding: 4px 6px; text-align: center; }
+.cmp tr:nth-child(even) td { background: #ebf5fb; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN II ✦</div>
+  <div class="cover-title">ÁP SUẤT<br>& LỰC ĐẨY</div>
+  <div class="cover-sub">Tại sao dao sắc cắt dễ hơn? Tại sao tàu thép nổi?</div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCENE 1: ÁP SUẤT LÀ GÌ?
+══════════════════════════════════════ -->
+<div class="ch-div">📐 ÁP SUẤT — p = F / S 📐</div>
+
+<div class="row">
+
+  <!-- Hook: dao sắc vs dao cùn -->
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi">
+      <div class="nar">Cùng lực tay — tại sao dao sắc cắt được, dao cùn thì không?</div>
+      <div class="scene" style="gap:24px; align-items:center;">
+        <div style="text-align:center;">
+          <div style="font-size:3.5em;">🔪</div>
+          <div style="font-size:.75em; margin-top:6px; color:#27ae60; font-weight:700;">Dao sắc<br>S nhỏ → p LỚN</div>
+          <div style="font-size:1.8em; color:#27ae60;">✅</div>
+        </div>
+        <div style="font-size:2.5em; font-weight:900; color:#888;">VS</div>
+        <div style="text-align:center;">
+          <div style="font-size:3.5em;">🗡️</div>
+          <div style="font-size:.75em; margin-top:6px; color:#c0392b; font-weight:700;">Dao cùn<br>S lớn → p nhỏ</div>
+          <div style="font-size:1.8em; color:#c0392b;">❌</div>
+        </div>
+      </div>
+      <div class="cap">Cùng lực F. Diện tích S khác nhau. Áp suất p = F/S hoàn toàn khác nhau.</div>
+    </div>
+  </div>
+
+  <!-- Công thức -->
+  <div class="panel">
+    <div class="pi">
+      <div class="nar nar-blue">Công thức</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div class="formula" style="font-size:1.5em;">p = F / S</div>
+        <div style="font-size:.8em; color:#555; line-height:1.7; text-align:center;">
+          p — áp suất (Pa = N/m²)<br>
+          F — lực ép vuông góc (N)<br>
+          S — diện tích bị ép (m²)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Các ví dụ thú vị -->
+<div class="row">
+
+  <!-- Đinh nhọn -->
+  <div class="panel bg-blue">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig">📌</span>
+        <div style="font-size:.8em; text-align:center; color:#1a5276; line-height:1.6;">
+          Đinh nhọn: đầu mũi ~0,01 mm²<br>
+          → áp suất <strong>khổng lồ</strong><br>xuyên qua tường dễ dàng.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Giày cao gót vs voi — wide panel -->
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="nar">Giày cao gót nguy hiểm hơn... voi?</div>
+      <div class="scene" style="gap:16px;">
+        <div style="text-align:center;">
+          <span class="fig">👠</span>
+          <div style="font-size:.75em; margin-top:6px; line-height:1.6;">
+            Gót: ~1 cm²<br>
+            Lực: ~500 N<br>
+            <strong style="color:#c0392b;">p = 5.000.000 Pa</strong>
+          </div>
+        </div>
+        <div style="font-size:2em; font-weight:900; color:#888;">VS</div>
+        <div style="text-align:center;">
+          <span class="fig">🐘</span>
+          <div style="font-size:.75em; margin-top:6px; line-height:1.6;">
+            Bàn chân: ~600 cm²<br>
+            Lực: ~50.000 N<br>
+            <strong style="color:#27ae60;">p = 833.000 Pa</strong>
+          </div>
+        </div>
+      </div>
+      <div class="cap">Giày cao gót gây áp suất lên sàn gỗ gấp 6 lần bàn chân voi.</div>
+    </div>
+  </div>
+
+  <!-- Xe tăng -->
+  <div class="panel bg-teal">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:8px;">
+        <span class="fig">🪖🚜</span>
+        <div style="font-size:.8em; text-align:center; color:#145a32; line-height:1.6;">
+          Xe tăng dùng xích rộng<br>để <strong>tăng S</strong> → giảm p<br>không lún đất mềm.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     PASCAL
+══════════════════════════════════════ -->
+<div class="ch-div">⚙️ BLAISE PASCAL — 1623–1662 ⚙️</div>
+
+<div class="row">
+
+  <!-- Pascal 19 tuổi làm máy tính -->
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Paris, 1642 — Pascal 19 tuổi</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-lg">👦⚙️</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Cha ông là quan thuế —<br>phải tính toán số liệu mỗi ngày.<br>
+          Pascal thấy mệt <em>hộ cha</em>.
+        </div>
+        <div class="bubble" style="font-size:.8em;">"Để con làm cái máy tính thay!"</div>
+        <div style="font-size:2.5em; text-align:center;">🔢➡️⚙️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 50 chiếc không ai mua -->
+  <div class="panel">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Kết quả: 50 chiếc máy tính cơ học</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">💰❌</span>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; line-height:1.7;">
+          Đắt hơn thuê người tính tay.<br>
+          Không ai mua.<br>
+          Dự án thất bại hoàn toàn.
+        </div>
+        <div class="sfx sfx-sm" style="color:#c0392b;">FLOP!</div>
+      </div>
+      <div class="cap">Nhưng ý tưởng "tự động hóa tính toán" sống tiếp 400 năm — đến máy tính hiện đại.</div>
+    </div>
+  </div>
+
+  <!-- Pascal và áp suất -->
+  <div class="panel bg-blue">
+    <div class="pi pi-tall">
+      <div class="nar nar-blue">Phát hiện quan trọng hơn</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">💧🔵</span>
+        <div class="formula" style="font-size:.9em;">p = d × h</div>
+        <div style="font-size:.82em; text-align:center; color:#1a5276; line-height:1.7;">
+          Chất lỏng truyền áp suất<br>
+          <strong>đều theo mọi hướng.</strong><br>
+          Áp suất tăng theo độ sâu h.
+        </div>
+      </div>
+      <div class="cap">Tên Pascal gắn với áp suất và cái máy tính đầu tiên — hai thứ tưởng chẳng liên quan.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Ứng dụng Pascal -->
+<div class="row">
+
+  <!-- Máy ép thủy lực -->
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="nar nar-teal">Định luật Pascal — áp suất truyền đều</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center;">
+          <span class="fig">💪</span>
+          <div style="font-size:.78em; margin-top:4px;">Lực nhỏ<br>Piston nhỏ</div>
+          <div style="font-size:1.5em; color:#2980b9;">⬇️</div>
+        </div>
+        <div style="font-size:1.5em; color:#85c1e9;">→→→</div>
+        <div style="text-align:center;">
+          <span class="fig">🏋️</span>
+          <div style="font-size:.78em; margin-top:4px;">Lực lớn<br>Piston lớn</div>
+          <div style="font-size:1.5em; color:#2980b9;">⬆️</div>
+        </div>
+      </div>
+      <div class="cap">Máy ép thủy lực, phanh xe ô tô, ghế nha sĩ — tất cả hoạt động trên nguyên lý này.</div>
+    </div>
+  </div>
+
+  <!-- Ứng dụng thực tế -->
+  <div class="panel bg-teal">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:2em; text-align:center;">🚗🦷🏗️</div>
+        <div style="font-size:.8em; text-align:center; color:#145a32; line-height:1.8;">
+          Phanh xe ô tô (dầu phanh)<br>
+          Ghế nha sĩ<br>
+          Máy ép thủy lực công nghiệp
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     TORRICELLI
+══════════════════════════════════════ -->
+<div class="ch-div">🔭 EVANGELISTA TORRICELLI — 1608–1647 🔭</div>
+
+<div class="row">
+
+  <!-- Câu hỏi Galileo bỏ ngỏ -->
+  <div class="panel bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">Câu hỏi bỏ ngỏ của Galileo</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🧑‍🔬❓</span>
+        <div class="bubble bubble-dark" style="font-size:.8em;">"Tại sao bơm nước chỉ hút lên được tối đa ~10m? Tôi biết câu trả lời nhưng... chưa kịp viết."</div>
+        <div style="font-size:.8em; color:#f1948a; text-align:center;">Galileo mất năm 1642.<br>Câu hỏi bỏ ngỏ.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Torricelli thừa kế -->
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">Học trò cuối của Galileo</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🔬💡</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Torricelli — một năm sau khi<br>thầy mất — dùng ống thủy ngân<br>để trả lời câu hỏi đó.
+        </div>
+        <div class="bubble" style="font-size:.8em;">"Thầy ơi, con đã tìm ra rồi."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thí nghiệm ống thủy ngân -->
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Thí nghiệm, 1643</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="display:flex; align-items:flex-end; gap:4px; justify-content:center;">
+          <!-- ống thủy ngân CSS -->
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="width:20px; height:60px; background:#aaa; border:2px solid #888; border-radius:2px 2px 0 0; display:flex; align-items:flex-end; justify-content:center; overflow:hidden;">
+              <div style="width:100%; height:70%; background:#9b59b6;"></div>
+            </div>
+            <div style="width:20px; height:14px; background:#9b59b6; border:2px solid #888; border-top:none;"></div>
+            <div style="font-size:.7em; color:#6c3483; font-weight:700; margin-top:2px;">Hg</div>
+          </div>
+          <div style="font-size:.8em; text-align:left; color:#1a5276; line-height:1.8;">
+            <strong>760 mm Hg</strong><br>
+            = Áp suất<br>khí quyển<br>1 atm
+          </div>
+        </div>
+        <div style="font-size:.78em; text-align:center; color:#555; line-height:1.6;">
+          Khí quyển ép xuống chậu thủy ngân →<br>đẩy cột thủy ngân lên cao 760 mm.<br>
+          Bơm nước: tương đương cột nước 10m.
+        </div>
+      </div>
+      <div class="cap">Đơn vị mmHg còn dùng đo huyết áp đến tận hôm nay.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Everest -->
+<div class="row">
+  <div class="panel panel-07 bg-red">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:6px;">
+        <span class="fig">🏔️</span>
+        <div style="font-size:.78em; text-align:center; color:#7b241c; line-height:1.6; font-weight:700;">
+          Đỉnh Everest<br>8.849 m
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-3x">
+    <div class="pi pi-short">
+      <div class="nar nar-red">Áp suất trên đỉnh Everest = 33% mực nước biển</div>
+      <div class="scene" style="gap:20px;">
+        <div style="text-align:center;">
+          <span class="fig">🍚</span>
+          <div class="bubble" style="font-size:.78em; margin-top:8px;">Nước sôi ở <strong style="color:#c0392b;">70°C</strong><br>thay vì 100°C.</div>
+        </div>
+        <div style="font-size:1.8em;">→</div>
+        <div style="text-align:center;">
+          <span class="fig">😔</span>
+          <div class="bubble" style="font-size:.78em; margin-top:8px;">Nấu cơm<br><strong>không chín</strong><br>đúng nghĩa.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     ARCHIMEDES
+══════════════════════════════════════ -->
+<div class="ch-div">🛁 ARCHIMEDES — 287–212 TCN 🛁</div>
+
+<!-- EUREKA scene -->
+<div class="row">
+
+  <!-- Bồn tắm -->
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Syracuse, ~250 TCN — Bài toán của vua Hiero</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-xl">🛁</span>
+        <div style="font-size:.85em; text-align:center; color:#5d4037; line-height:1.7;">
+          Vua giao bài toán: <em>"Vương miện có bị pha bạc vào không?"</em><br>
+          Archimedes suy nghĩ mãi...<br>
+          Rồi bước vào bồn tắm.
+        </div>
+        <div style="font-size:2em; text-align:center; color:#3498db;">💧💧💧 ⬆️ tràn ra</div>
+        <div class="bubble bubble-big" style="font-size:1.3em; text-align:center; border-width:3px;">
+          🎉 EUREKA! 🎉
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nguyên lý + công thức -->
+  <div class="panel bg-blue">
+    <div class="pi pi-tall">
+      <div class="nar nar-blue">Nguyên lý Archimedes</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div style="font-size:1.8em; text-align:center;">🚢💧</div>
+        <div class="formula" style="font-size:.9em;">F<sub>A</sub> = d<sub>lỏng</sub> × V<sub>chiếm chỗ</sub></div>
+        <div style="font-size:.8em; text-align:center; color:#1a5276; line-height:1.7;">
+          Vật bị chất lỏng đẩy lên<br>
+          một lực bằng <strong>trọng lượng</strong><br>
+          phần chất lỏng bị vật chiếm chỗ.
+        </div>
+        <div class="thought" style="font-size:.78em;">
+          Vương miện cùng thể tích sẽ<br>chiếm chỗ nước như nhau.<br>Khối lượng riêng tiết lộ tất cả!
+        </div>
+      </div>
+      <div class="cap">Vương miện bị pha bạc — nhẹ hơn vàng thật cùng thể tích. Vua đã bị gian lận.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Cái chết của Archimedes -->
+<div class="row">
+
+  <!-- Archimedes đang vẽ hình -->
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Syracuse, 212 TCN — Quân La Mã tràn vào thành</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">📐✍️</span>
+        <div style="font-size:.85em; text-align:center; color:#5d4037; line-height:1.7;">
+          Archimedes đang cúi đầu<br>giải bài toán hình học trên cát.<br>
+          Tiếng kiếm, tiếng la hét xung quanh.
+        </div>
+        <div class="bubble" style="font-size:.8em;">"Đừng làm hỏng hình của ta!"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lính La Mã không biết ông là ai -->
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Lính La Mã không biết ông là ai</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div style="font-size:3em; text-align:center;">🗡️&nbsp;😔</div>
+        <div style="font-size:.83em; color:#aed6f1; text-align:center; line-height:1.7;">
+          Tướng Marcellus ra lệnh:<br>
+          <em>"Không được hại Archimedes."</em>
+        </div>
+        <div style="font-size:.83em; color:#f1948a; text-align:center; line-height:1.7;">
+          Một lính không biết lệnh đó.<br>
+          Không biết ông là ai.<br>
+          Chỉ thấy một ông già đang vẽ.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marcellus buồn -->
+  <div class="panel bg-red">
+    <div class="pi pi-tall">
+      <div class="nar nar-red">Sau đó...</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">😢⚔️</span>
+        <div style="font-size:.83em; text-align:center; color:#7b241c; line-height:1.7;">
+          Marcellus tổ chức tang lễ<br>trọng thể cho Archimedes<br>theo ghi chép La Mã.
+        </div>
+        <div class="bubble" style="font-size:.8em; border-color:#c0392b; color:#7b241c;">"Đây là thứ đau buồn nhất ta từng làm trong cuộc chiến này."</div>
+      </div>
+      <div class="cap">Câu chuyện có thể được thêu dệt. Nhưng cái chết của Archimedes là thật.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Ứng dụng lực đẩy -->
+<div class="row">
+
+  <!-- Tàu thép nổi -->
+  <div class="panel panel-2x">
+    <div class="pi">
+      <div class="nar">Tại sao tàu thép nổi dù nặng hơn nước 8 lần?</div>
+      <div class="scene" style="gap:20px; align-items:center;">
+        <div style="text-align:center;">
+          <span class="fig">⚓🚢</span>
+          <div style="font-size:.8em; margin-top:6px; line-height:1.6;">
+            Thân tàu <strong>rỗng</strong><br>
+            Thể tích nước chiếm chỗ <strong>lớn</strong><br>
+            → F<sub>A</sub> đủ để nâng tàu
+          </div>
+        </div>
+        <div style="font-size:.8em; color:#555; text-align:left; line-height:1.8;">
+          Khối lượng riêng <em>trung bình</em><br>
+          của cả con tàu (thép + không khí bên trong)<br>
+          <strong>nhỏ hơn nước.</strong><br><br>
+          Thả khối thép đặc: chìm.<br>
+          Tạo hình thuyền rỗng: nổi.
+        </div>
+      </div>
+      <div class="cap">Nguyên lý thiết kế tàu thuyền từ 2.000 năm trước — vẫn đúng cho tàu sân bay 100.000 tấn.</div>
+    </div>
+  </div>
+
+  <!-- Tàu ngầm -->
+  <div class="panel bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">Tàu ngầm: điều khiển lực đẩy chủ động</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🤿🚢</span>
+        <div style="font-size:.82em; color:#aed6f1; text-align:center; line-height:1.8;">
+          Bơm <strong style="color:#3498db;">nước vào</strong> khoang dằn<br>→ khối lượng tăng → <strong style="color:#c0392b;">chìm</strong><br><br>
+          Thổi <strong style="color:#2ecc71;">khí ra</strong> khoang dằn<br>→ khối lượng giảm → <strong style="color:#2ecc71;">nổi</strong>
+        </div>
+      </div>
+      <div class="cap" style="color:#85c1e9;">Không có phép màu nào — chỉ là Archimedes áp dụng chủ động.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     CLOSING
+══════════════════════════════════════ -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN II —</div>
+  <div class="closing-lines">
+    Pascal 19 tuổi làm máy tính, thất bại, rồi tìm ra định luật áp suất.<br>
+    Torricelli trả lời câu hỏi thầy Galileo bỏ ngỡ — bằng một ống thủy ngân.<br>
+    Archimedes phát hiện nguyên lý trong bồn tắm, chết vì đang giải bài toán hình học.<br>
+    Tàu thép nổi không phải phép màu — là vật lý đã biết từ 250 TCN.
+  </div>
+  <div class="closing-next">➤ PHẦN III: CÔNG VÀ NĂNG LƯỢNG ➤</div>
+</div>
+
+</div>
+</body>
+</html>

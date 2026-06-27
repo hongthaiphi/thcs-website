@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Ánh Sáng & Quang Học</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #1a1000; font-family: 'Comic Neue','Comic Sans MS',cursive; padding: 24px 16px; color: #111; }
+.comic-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+
+.cover { background: #1a1000; border: 5px solid #f39c12; padding: 32px 24px; text-align: center; position: relative; overflow: hidden; margin-bottom: 4px; }
+.cover::after { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(243,156,18,.06) 8px, rgba(243,156,18,.06) 16px); pointer-events:none; }
+.cover-series { font-family:'Bangers',sans-serif; color:#f39c12; letter-spacing:6px; font-size:1em; margin-bottom:6px; }
+.cover-title  { font-family:'Bangers',sans-serif; color:#fff; font-size:3.6em; line-height:.9; text-shadow:4px 4px 0 #d35400, 8px 8px 0 #7d3c00; letter-spacing:2px; margin-bottom:10px; }
+.cover-sub    { color:#fad7a0; font-weight:700; font-size:1.05em; letter-spacing:1px; }
+
+.ch-div { background:#1a1000; color:#f39c12; font-family:'Bangers',sans-serif; font-size:1.25em; letter-spacing:4px; text-align:center; padding:10px 16px; margin:4px 0; }
+.row { display:flex; gap:4px; }
+.panel { border:3px solid #111; background:#fff; position:relative; overflow:hidden; flex:1; }
+.panel-2x { flex:2; }
+.panel-3x { flex:3; }
+.panel-07  { flex:.75; }
+
+.bg-dark   { background:#1a1000; color:#fff; }
+.bg-yellow { background:#fef9e7; }
+.bg-orange { background:#fef0e7; }
+.bg-blue   { background:#ebf5fb; }
+.bg-red    { background:#fdedec; }
+.bg-green  { background:#eafaf1; }
+.bg-purple { background:#f5eef8; }
+.bg-gray   { background:#f2f3f4; }
+
+.pi       { padding:12px; display:flex; flex-direction:column; gap:8px; min-height:190px; height:100%; }
+.pi-tall  { min-height:280px; }
+.pi-short { min-height:130px; }
+
+.nar         { background:#ffd700; border:2px solid #111; padding:4px 8px; font-size:.78em; font-weight:700; flex-shrink:0; }
+.nar-orange  { background:#fad7a0; }
+.nar-blue    { background:#aed6f1; }
+.nar-red     { background:#f1948a; color:#fff; }
+.nar-dark    { background:#111; color:#ffd700; }
+.nar-green   { background:#a9dfbf; }
+.nar-purple  { background:#d2b4de; }
+
+.scene     { flex:1; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+.scene-col { flex-direction:column; }
+
+.fig    { font-size:3em;   line-height:1; display:block; }
+.fig-lg { font-size:4.5em; line-height:1; display:block; }
+.fig-xl { font-size:6em;   line-height:1; display:block; }
+
+.bubble { background:#fff; border:2.5px solid #111; border-radius:18px; padding:7px 11px; font-weight:700; font-size:.82em; line-height:1.35; position:relative; max-width:95%; }
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px; left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-dark { background:#1a1000; color:#ffd700; border-color:#ffd700; }
+.bubble-dark::after  { border-top-color:#ffd700; }
+.bubble-dark::before { border-top-color:#1a1000; }
+
+.thought { background:#eaf4fb; border:2.5px solid #111; border-radius:50%; padding:10px 16px; font-weight:700; font-size:.82em; line-height:1.4; text-align:center; position:relative; }
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+.formula       { background:#fef9e7; border:2px solid #f39c12; border-radius:8px; padding:7px 14px; font-size:1.1em; font-weight:700; text-align:center; color:#7d6608; flex-shrink:0; }
+.formula-blue  { background:#ebf5fb; border-color:#2980b9; color:#1a5276; }
+
+.sfx    { font-family:'Bangers',sans-serif; font-size:2.2em; color:#f39c12; text-shadow:2px 2px 0 #111; transform:rotate(-4deg); display:inline-block; letter-spacing:2px; }
+.sfx-b  { color:#2980b9; }
+.sfx-r  { color:#c0392b; }
+.sfx-sm { font-size:1.4em; }
+
+.cap { background:#111; color:#fff; padding:5px 9px; font-size:.76em; font-style:italic; flex-shrink:0; margin-top:auto; }
+
+/* Rainbow */
+.rainbow { height:16px; border-radius:8px; background:linear-gradient(90deg,#e74c3c,#e67e22,#f1c40f,#27ae60,#2980b9,#9b59b6); margin:4px 0; }
+
+/* Eye comparison */
+.eye-compare { display:flex; gap:12px; font-size:.78em; }
+.eye-box { flex:1; border:2px solid #aaa; border-radius:6px; padding:6px; text-align:center; line-height:1.6; }
+
+.closing { background:#1a1000; border:3px solid #111; color:#fff; text-align:center; padding:28px 20px; margin-top:4px; }
+.closing-title { font-family:'Bangers',sans-serif; color:#f39c12; font-size:1.6em; letter-spacing:4px; margin-bottom:12px; }
+.closing-lines { color:#fad7a0; font-size:.88em; line-height:2; margin-bottom:14px; }
+.closing-next  { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.1em; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN VI ✦</div>
+  <div class="cover-title">ÁNH SÁNG<br>& QUANG HỌC</div>
+  <div class="cover-sub">Tại sao bầu trời xanh, còn hoàng hôn lại đỏ?</div>
+</div>
+
+<!-- HOOK: BẦU TRỜI -->
+<div class="ch-div">🌅 CÙNG MỘT ÁNH SÁNG — HAI MÀU KHÁC NHAU 🌅</div>
+<div class="row">
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Trưa hè — nhìn lên bầu trời</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">🌤️</span>
+        <div style="font-size:.83em; text-align:center; color:#1a5276; line-height:1.7;">
+          Ánh sáng Mặt Trời = ánh sáng trắng<br>
+          = hỗn hợp mọi màu.<br><br>
+          Phân tử khí tán xạ ánh sáng <strong>xanh</strong><br>
+          (bước sóng ngắn) mạnh hơn.<br><br>
+          Nhìn lên → thấy màu bị tán xạ nhiều<br>
+          → <strong style="color:#2980b9;">XANH</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-orange">
+    <div class="pi">
+      <div class="nar nar-orange">Hoàng hôn — nhìn ngang</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">🌅</span>
+        <div style="font-size:.83em; text-align:center; color:#784212; line-height:1.7;">
+          Hoàng hôn: ánh sáng xuyên<br>
+          lớp khí quyển <strong>dày hơn nhiều</strong>.<br><br>
+          Màu xanh tán xạ hết dọc đường.<br>
+          Chỉ còn đỏ và cam đến mắt.<br>
+          → <strong style="color:#e74c3c;">ĐỎ CAM</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi">
+      <div class="nar nar-dark">Cùng một hiện tượng</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <div class="rainbow"></div>
+        <div style="color:#fad7a0; font-size:.83em; text-align:center; line-height:1.7;">
+          Tán xạ ánh sáng —<br>
+          hai góc nhìn, hai màu khác nhau.
+        </div>
+        <div style="color:#aaa; font-size:.78em; text-align:center; line-height:1.6;">
+          Cầu vồng: giọt nước tán xạ và<br>phản xạ toàn phần — phân tách<br>ánh sáng trắng thành phổ màu.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IBN AL-HAYTHAM -->
+<div class="ch-div">👁️ IBN AL-HAYTHAM — 965–1040 👁️</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Nhà khoa học Ả Rập và mắt nhìn</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">👁️📖</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Người Hy Lạp cổ đại nghĩ:<br>
+          <em>"Mắt phát ra tia sáng để nhìn."</em><br><br>
+          Ibn al-Haytham sửa lại:<br>
+          <strong>"Ánh sáng đi VÀO mắt —<br>không phải mắt phát ra."</strong>
+        </div>
+        <div class="sfx sfx-sm" style="color:#f39c12; text-align:center;">ĐẢO NGƯỢC!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Cairo — bị quản thúc gần 10 năm</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🏠📝</span>
+        <div style="color:#fad7a0; font-size:.83em; text-align:center; line-height:1.7;">
+          Ibn al-Haytham nhận lời Caliph:<br>
+          "điều tiết lũ sông Nile."<br><br>
+          Rồi nhận ra — <strong style="color:#f1948a;">không thể làm được.</strong><br>
+          Giả điên để thoát bản án.
+        </div>
+        <div class="bubble bubble-dark" style="font-size:.78em;">"Bị giam... nhưng vẫn có bút và giấy."</div>
+      </div>
+      <div class="cap" style="color:#82e0aa;">Bị giam thúc, ông viết hầu hết tác phẩm lớn nhất. Sách Kitab al-Manazir ảnh hưởng quang học châu Âu 500 năm.</div>
+    </div>
+  </div>
+
+  <div class="panel bg-blue">
+    <div class="pi pi-tall">
+      <div class="nar nar-blue">Di sản</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🔭📚</span>
+        <div style="font-size:.83em; text-align:center; color:#1a5276; line-height:1.7;">
+          Nền tảng cho<br>Newton và Kepler<br>về quang học.<br><br>
+          Ông mất năm 1040.<br>
+          Newton sinh năm 1643.
+        </div>
+        <div style="background:#d6eaf8; border:2px solid #2980b9; border-radius:6px; padding:6px; font-size:.8em; text-align:center; color:#1a5276; font-weight:700; line-height:1.5;">
+          600 năm trước Newton —<br>Ibn al-Haytham đã đặt nền móng.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SNELL vs DESCARTES -->
+<div class="ch-div">📐 SNELL vs DESCARTES — AI PHÁT HIỆN TRƯỚC? 📐</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">Khúc xạ ánh sáng — đổi hướng khi qua môi trường khác</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center; flex:1;">
+          <div style="font-size:2.5em;">💡</div>
+          <div style="font-size:3em; color:#aaa; line-height:1;">↘</div>
+          <div style="width:90%; height:3px; background:#2980b9; margin:0 auto;"></div>
+          <div style="font-size:3em; color:#e74c3c; line-height:1;">↘</div>
+          <div style="font-size:.75em; margin-top:4px; color:#c0392b; font-weight:700;">đổi hướng!</div>
+        </div>
+        <div style="flex:2; font-size:.82em; color:#5d4037; line-height:1.7;">
+          Khi ánh sáng đi từ môi trường này sang môi trường khác → đổi hướng.<br><br>
+          Cây gậy nhúng vào nước → <strong>trông bị gãy</strong> ở mặt nước.<br><br>
+          Hồ trông <strong>nông hơn thực tế</strong> — đã gây tai nạn chết đuối khi người nhảy xuống tưởng cạn.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-purple">
+    <div class="pi">
+      <div class="nar nar-purple">Ai phát hiện định luật khúc xạ?</div>
+      <div class="scene" style="gap:12px; align-items:flex-start; flex-wrap:nowrap;">
+        <div style="flex:1; text-align:center;">
+          <span class="fig">🔬</span>
+          <div style="font-size:.8em; margin-top:6px; color:#6c3483; line-height:1.7; font-weight:700;">Willebrord Snell<br>1621</div>
+          <div style="font-size:.78em; color:#555; line-height:1.5;">Phát hiện định luật.<br><strong>Không công bố.</strong><br>Bản thảo nằm im.</div>
+        </div>
+        <div style="align-self:center; font-size:1.8em; color:#aaa;">→</div>
+        <div style="flex:1; text-align:center;">
+          <span class="fig">📜</span>
+          <div style="font-size:.8em; margin-top:6px; color:#1a5276; line-height:1.7; font-weight:700;">René Descartes<br>1637</div>
+          <div style="font-size:.78em; color:#555; line-height:1.5;">Công bố dạng toán học.<br><strong>Không nhắc Snell.</strong></div>
+        </div>
+      </div>
+      <div class="cap">Sau khi Descartes chết, người ta tìm thấy bản thảo Snell. Giải pháp: đặt tên chung "Định luật Snell-Descartes" — tùy nước.</div>
+    </div>
+  </div>
+</div>
+
+<!-- KÍNH VIỄN VỌNG + GALILEO -->
+<div class="ch-div">🔭 HANS LIPPERSHEY & GALILEO — KHI KÍNH HƯỚNG LÊN TRỜI 🔭</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Hà Lan, 1608 — Cửa hàng kính mắt Lippershey</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">👦👦🔭</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Hai đứa trẻ trong cửa hàng<br>cầm hai thấu kính nhìn qua nhau.
+        </div>
+        <div class="bubble" style="font-size:.8em;">"Nhìn kìa! Tháp nhà thờ trông gần hơn!"</div>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Lippershey thấy, hiểu ngay.<br>
+          Đăng ký bằng sáng chế.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Galileo nghe tin — và làm kính 30×</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🔭⭐</span>
+        <div class="thought" style="font-size:.78em; background:#0d2137; border-color:#ffd700; color:#ffd700;">
+          Họ dùng để nhìn tàu địch từ xa...<br>
+          Nhưng nếu hướng lên trời thì sao?
+        </div>
+        <div style="color:#fad7a0; font-size:.83em; text-align:center; line-height:1.7;">
+          Galileo tự chế kính 30×.<br>
+          Hướng lên bầu trời.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-orange">
+    <div class="pi pi-tall">
+      <div class="nar nar-orange">1610 — Khám phá thay đổi lịch sử</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-xl">♃🌑🌑🌑🌑</span>
+        <div style="font-size:.83em; text-align:center; color:#784212; line-height:1.7;">
+          Bốn mặt trăng quay quanh Sao Mộc.<br><br>
+          <strong>Không phải mọi thứ đều quay quanh Trái Đất.</strong>
+        </div>
+        <div class="bubble" style="font-size:.78em; background:#fdedec; border-color:#e74c3c; color:#7b241c;">"Thuyết địa tâm... vừa mất một cột trụ."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MẮT NGƯỜI + PHÂN TÍCH ÁNH SÁNG -->
+<div class="ch-div">👓 MẮT NGƯỜI & PHÂN TÍCH ÁNH SÁNG 👓</div>
+<div class="row">
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Ba loại tật khúc xạ</div>
+      <div class="scene scene-col" style="gap:6px;">
+        <div class="eye-compare">
+          <div class="eye-box" style="border-color:#e74c3c;">
+            <strong style="color:#c0392b;">Cận thị</strong><br>
+            Nhãn cầu dài → ảnh trước võng mạc → nhìn xa mờ<br>
+            Chữa: kính <strong>lõm</strong> (phân kỳ)
+          </div>
+          <div class="eye-box" style="border-color:#2980b9;">
+            <strong style="color:#1a5276;">Viễn thị</strong><br>
+            Nhãn cầu ngắn → ảnh sau võng mạc<br>
+            Chữa: kính <strong>lồi</strong> (hội tụ)
+          </div>
+        </div>
+        <div class="eye-box" style="border-color:#7d3c00; background:#fef0e7; font-size:.8em;">
+          <strong style="color:#784212;">Lão thị</strong>: thủy tinh thể cứng theo tuổi, giảm điều tiết. Thường trên 40 tuổi. <em>Khác với viễn thị bẩm sinh.</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi">
+      <div class="nar">Newton, 1666 — vẫn đang nghỉ tránh dịch hạch</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">🔺☀️</span>
+          <div style="font-size:.82em; margin-top:8px; color:#5d4037; line-height:1.7;">
+            Newton dùng lăng kính<br>phân tách ánh sáng trắng.
+          </div>
+          <div class="rainbow" style="margin-top:8px;"></div>
+          <div style="font-size:.78em; margin-top:4px; color:#7d6608;">🔴🟠🟡🟢🔵🟣</div>
+        </div>
+        <div style="flex:1; text-align:center;">
+          <div class="thought" style="font-size:.78em;">
+            Màu sắc không phải thuộc tính<br>của thủy tinh hay nước...<br>Màu sắc là trong ánh sáng!
+          </div>
+          <div style="font-size:.78em; margin-top:16px; color:#5d4037; line-height:1.6; font-style:italic;">
+            Trước đó: người ta nghĩ lăng kính<br>"nhuộm màu" ánh sáng trắng.<br>
+            Newton chứng minh ngược lại.
+          </div>
+        </div>
+      </div>
+      <div class="cap">Cầu vồng cũng được Newton giải thích — cùng nguyên lý, giọt nước thay thế lăng kính thủy tinh.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN VI —</div>
+  <div class="closing-lines">
+    Bầu trời xanh và hoàng hôn đỏ là cùng một hiện tượng — chỉ khác góc nhìn.<br>
+    Ibn al-Haytham bị giam cầm 10 năm và dùng thời gian đó viết nền tảng quang học châu Âu 500 năm.<br>
+    Snell phát hiện định luật khúc xạ năm 1621 nhưng không công bố — Descartes công bố năm 1637 không nhắc Snell, nay đặt tên chung.<br>
+    Hai đứa trẻ trong cửa hàng kính của Lippershey → Galileo hướng kính lên trời → bốn mặt trăng Sao Mộc → thuyết địa tâm sụp đổ.
+  </div>
+  <div class="closing-next">➤ PHẦN VII: ĐIỆN HỌC ➤</div>
+</div>
+
+</div>
+</body>
+</html>

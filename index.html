@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiến Thức THCS — Viết Lại Cho Người Lớn</title>
+<meta name="description" content="Sinh học, Hóa học, Vật lý, Toán học cấp THCS — viết lại cho người lớn đọc. Kiến thức phổ thông mà mọi người Việt Nam đều nên biết.">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sinh: #27ae60;
+  --hoa:  #e74c3c;
+  --vat:  #2980b9;
+  --toan: #9b59b6;
+  --bg:   #0a0a0a;
+  --card: #111;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: #eee;
+  font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  padding: 64px 24px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(41,128,185,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-label {
+  font-family: 'Bangers', sans-serif;
+  letter-spacing: 6px;
+  color: #555;
+  font-size: .95em;
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'Bangers', sans-serif;
+  font-size: clamp(2.8em, 8vw, 5.5em);
+  line-height: .92;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  color: #888;
+  font-size: 1.05em;
+  max-width: 540px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+.hero-badge {
+  display: inline-block;
+  border: 1px solid #333;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: .82em;
+  color: #555;
+  letter-spacing: 1px;
+}
+
+/* ── GRID ── */
+.grid {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 2px solid #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .2s, transform .2s;
+}
+.card:hover { transform: translateY(-3px); }
+
+.card-header {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #1e1e1e;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.card-icon {
+  font-size: 2.8em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.card-label {
+  font-family: 'Bangers', sans-serif;
+  font-size: .75em;
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+}
+.card-title {
+  font-family: 'Bangers', sans-serif;
+  font-size: 1.9em;
+  line-height: .95;
+  letter-spacing: 1px;
+}
+.card-desc {
+  padding: 14px 24px;
+  color: #777;
+  font-size: .85em;
+  line-height: 1.65;
+  min-height: 80px;
+}
+.card-actions {
+  padding: 14px 24px 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-family: 'Comic Neue', cursive;
+  font-weight: 700;
+  font-size: .88em;
+  text-decoration: none;
+  transition: opacity .15s, transform .15s;
+  border: none;
+  cursor: pointer;
+}
+.btn:hover { opacity: .85; transform: scale(.98); }
+.btn-primary {
+  color: #fff;
+}
+.btn-outline {
+  background: transparent;
+  border: 2px solid #2a2a2a;
+  color: #666;
+}
+.btn-outline:hover { border-color: #444; color: #aaa; }
+
+/* Subject colors */
+.sinh .card-label  { color: var(--sinh); }
+.sinh .card-title  { color: var(--sinh); }
+.sinh .card:hover  { border-color: var(--sinh); }
+.sinh .btn-primary { background: var(--sinh); }
+.sinh .card { border-color: rgba(39,174,96,.2); }
+.sinh .card:hover { border-color: var(--sinh); }
+
+.hoa .card-label  { color: var(--hoa); }
+.hoa .card-title  { color: var(--hoa); }
+.hoa .btn-primary { background: var(--hoa); }
+.hoa .card { border-color: rgba(231,76,60,.2); }
+.hoa .card:hover { border-color: var(--hoa); }
+
+.vat .card-label  { color: var(--vat); }
+.vat .card-title  { color: var(--vat); }
+.vat .btn-primary { background: var(--vat); }
+.vat .card { border-color: rgba(41,128,185,.2); }
+.vat .card:hover { border-color: var(--vat); }
+
+.toan .card-label  { color: var(--toan); }
+.toan .card-title  { color: var(--toan); }
+.toan .btn-primary { background: var(--toan); }
+.toan .card { border-color: rgba(155,89,182,.2); }
+.toan .card:hover { border-color: var(--toan); }
+
+/* Comic badge */
+.badge {
+  display: inline-block;
+  font-size: .72em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.badge-done   { background: #1a3a1a; color: #27ae60; }
+.badge-soon   { background: #2a2a1a; color: #d4ac0d; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid #1a1a1a;
+  color: #444;
+  font-size: .82em;
+  line-height: 1.8;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 500px) {
+  .grid { grid-template-columns: 1fr; }
+  .card-actions { flex-direction: column; }
+  .btn { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-label">✦ KIẾN THỨC PHỔ THÔNG ✦</div>
+  <h1 class="hero-title">THCS<br>TOÀN TẬP</h1>
+  <p class="hero-sub">
+    Sinh học, Hóa học, Vật lý, Toán học cấp THCS —
+    viết lại cho người lớn đọc. Kiến thức phổ thông mà
+    mọi người Việt Nam đều nên biết, kể cả câu chuyện
+    của người tìm ra nó.
+  </p>
+  <span class="hero-badge">Bài dài · Có neo móc · Không học vẹt</span>
+</section>
+
+<div class="grid">
+
+  <!-- SINH HỌC -->
+  <div class="sinh">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">🧬</div>
+        <div>
+          <div class="card-label">MÔN HỌC 01</div>
+          <div class="card-title">SINH HỌC</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Tế bào, di truyền, tiến hóa, hệ cơ quan. Tại sao tim đập theo nhịp riêng, nhóm máu AB được phát hiện muộn hơn một năm, và Wallace gửi bản thảo cho Darwin từ rừng Borneo.
+      </div>
+      <div class="card-actions">
+        <a href="sinh-hoc/doc.html" class="btn btn-primary">📖 Bài đọc</a>
+        <a href="sinh-hoc/index.html" class="btn btn-outline">🎨 Comic <span class="badge badge-soon">Sắp có</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HÓA HỌC -->
+  <div class="hoa">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⚗️</div>
+        <div>
+          <div class="card-label">MÔN HỌC 02</div>
+          <div class="card-title">HÓA HỌC</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Nguyên tử, liên kết hóa học, phản ứng, dung dịch. Tại sao Mendeleev bỏ chỗ trống trong bảng tuần hoàn, Lavoisier bị chém đầu, và nước là phân tử kỳ lạ nhất vũ trụ.
+      </div>
+      <div class="card-actions">
+        <a href="hoa-hoc/doc.html" class="btn btn-primary">📖 Bài đọc</a>
+        <a href="hoa-hoc/index.html" class="btn btn-outline">🎨 Comic <span class="badge badge-soon">Sắp có</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- VẬT LÝ -->
+  <div class="vat">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⚡</div>
+        <div>
+          <div class="card-label">MÔN HỌC 03</div>
+          <div class="card-title">VẬT LÝ</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        9 chương: Chuyển động &amp; Lực → Áp suất → Năng lượng → Nhiệt → Âm thanh → Ánh sáng → Điện → Điện từ → Hạt nhân. Newton 22 tuổi, Tesla chết một mình, Einstein ở văn phòng sáng chế.
+      </div>
+      <div class="card-actions">
+        <a href="vat-ly/doc.html" class="btn btn-primary">📖 Bài đọc</a>
+        <a href="vat-ly/index.html" class="btn btn-outline" style="border-color:#1a3d5c; color:#2980b9;">🎨 Comic <span class="badge badge-done">9 chương ✓</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOÁN HỌC -->
+  <div class="toan">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">📐</div>
+        <div>
+          <div class="card-label">MÔN HỌC 04</div>
+          <div class="card-title">TOÁN HỌC</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Số học, đại số, hàm số, hình học, thống kê. Gauss tính 1+2+…+100 trong 2 phút lúc 9 tuổi, Hippasus bị ném xuống biển vì phát hiện số vô tỉ, Fermat để lại lề sách 358 năm.
+      </div>
+      <div class="card-actions">
+        <a href="toan-hoc/doc.html" class="btn btn-primary">📖 Bài đọc</a>
+        <a href="toan-hoc/index.html" class="btn btn-outline">🎨 Comic <span class="badge badge-soon">Sắp có</span></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Viết năm 2026 · Kiến thức THCS dành cho người lớn<br>
+  <span style="color:#2a2a2a;">——————</span>
+</footer>
+
+</body>
+</html>

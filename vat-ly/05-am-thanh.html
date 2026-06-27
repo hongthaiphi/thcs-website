@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vật Lý THCS: Âm Thanh</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0c0c1a; font-family: 'Comic Neue','Comic Sans MS',cursive; padding: 24px 16px; color: #111; }
+.comic-wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+
+.cover { background: #06061a; border: 5px solid #9b59b6; padding: 32px 24px; text-align: center; position: relative; overflow: hidden; margin-bottom: 4px; }
+.cover::after { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(155,89,182,.05) 8px, rgba(155,89,182,.05) 16px); pointer-events:none; }
+.cover-series { font-family:'Bangers',sans-serif; color:#9b59b6; letter-spacing:6px; font-size:1em; margin-bottom:6px; }
+.cover-title  { font-family:'Bangers',sans-serif; color:#fff; font-size:4em; line-height:.9; text-shadow:4px 4px 0 #6c3483, 8px 8px 0 #3b1f63; letter-spacing:2px; margin-bottom:10px; }
+.cover-sub    { color:#d2b4de; font-weight:700; font-size:1.05em; letter-spacing:1px; }
+
+.ch-div { background:#06061a; color:#9b59b6; font-family:'Bangers',sans-serif; font-size:1.25em; letter-spacing:4px; text-align:center; padding:10px 16px; margin:4px 0; }
+.row { display:flex; gap:4px; }
+.panel { border:3px solid #111; background:#fff; position:relative; overflow:hidden; flex:1; }
+.panel-2x { flex:2; }
+.panel-3x { flex:3; }
+.panel-07  { flex:.75; }
+
+.bg-dark   { background:#06061a; color:#fff; }
+.bg-yellow { background:#fef9e7; }
+.bg-purple { background:#f5eef8; }
+.bg-blue   { background:#ebf5fb; }
+.bg-red    { background:#fdedec; }
+.bg-orange { background:#fef0e7; }
+.bg-gray   { background:#f2f3f4; }
+.bg-green  { background:#eafaf1; }
+
+.pi       { padding:12px; display:flex; flex-direction:column; gap:8px; min-height:190px; height:100%; }
+.pi-tall  { min-height:280px; }
+.pi-short { min-height:130px; }
+
+.nar         { background:#ffd700; border:2px solid #111; padding:4px 8px; font-size:.78em; font-weight:700; flex-shrink:0; }
+.nar-purple  { background:#d2b4de; }
+.nar-blue    { background:#aed6f1; }
+.nar-red     { background:#f1948a; color:#fff; }
+.nar-dark    { background:#111; color:#ffd700; }
+.nar-orange  { background:#fad7a0; }
+.nar-green   { background:#a9dfbf; }
+
+.scene     { flex:1; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+.scene-col { flex-direction:column; }
+
+.fig    { font-size:3em;   line-height:1; display:block; }
+.fig-lg { font-size:4.5em; line-height:1; display:block; }
+.fig-xl { font-size:6em;   line-height:1; display:block; }
+.fig-sm { font-size:2em;   line-height:1; display:block; }
+
+.bubble { background:#fff; border:2.5px solid #111; border-radius:18px; padding:7px 11px; font-weight:700; font-size:.82em; line-height:1.35; position:relative; max-width:95%; }
+.bubble::after  { content:''; position:absolute; bottom:-13px; left:18px; border:13px solid transparent; border-top-color:#111; border-bottom:0; }
+.bubble::before { content:''; position:absolute; bottom:-9px; left:21px; border:10px solid transparent; border-top-color:#fff; border-bottom:0; z-index:1; }
+.bubble-right::after  { left:auto; right:18px; }
+.bubble-right::before { left:auto; right:21px; }
+.bubble-dark { background:#06061a; color:#ffd700; border-color:#ffd700; }
+.bubble-dark::after  { border-top-color:#ffd700; }
+.bubble-dark::before { border-top-color:#06061a; }
+
+.thought { background:#eaf4fb; border:2.5px solid #111; border-radius:50%; padding:10px 16px; font-weight:700; font-size:.82em; line-height:1.4; text-align:center; position:relative; }
+.thought::after { content:'•••'; position:absolute; bottom:-18px; left:20px; font-size:.9em; color:#111; letter-spacing:2px; }
+
+.formula        { background:#f5eef8; border:2px solid #9b59b6; border-radius:8px; padding:7px 14px; font-size:1.1em; font-weight:700; text-align:center; color:#6c3483; flex-shrink:0; }
+.formula-blue   { background:#ebf5fb; border-color:#2980b9; color:#1a5276; }
+.formula-red    { background:#fdedec; border-color:#c0392b; color:#7b241c; }
+
+.sfx    { font-family:'Bangers',sans-serif; font-size:2.2em; color:#9b59b6; text-shadow:2px 2px 0 #111; transform:rotate(-4deg); display:inline-block; letter-spacing:2px; }
+.sfx-r  { color:#c0392b; }
+.sfx-b  { color:#2980b9; }
+.sfx-sm { font-size:1.4em; }
+
+.cap { background:#111; color:#fff; padding:5px 9px; font-size:.76em; font-style:italic; flex-shrink:0; margin-top:auto; }
+
+/* Sound wave visual */
+.wave-row { display:flex; align-items:center; gap:4px; justify-content:center; }
+.wave-bar { width:6px; background:#9b59b6; border-radius:3px; }
+
+/* Speed comparison bars */
+.speed-item { display:flex; align-items:center; gap:6px; font-size:.78em; }
+.speed-bar-wrap { flex:1; background:#eee; border-radius:3px; height:14px; overflow:hidden; }
+.speed-bar-fill { height:100%; border-radius:3px; display:flex; align-items:center; justify-content:flex-end; padding-right:4px; font-size:.8em; color:#fff; font-weight:700; }
+
+/* dB visual */
+.db-row { display:flex; align-items:center; gap:8px; font-size:.78em; }
+.db-bar { height:16px; border-radius:3px; display:flex; align-items:center; padding:0 6px; font-weight:700; color:#fff; }
+
+.closing { background:#06061a; border:3px solid #111; color:#fff; text-align:center; padding:28px 20px; margin-top:4px; }
+.closing-title { font-family:'Bangers',sans-serif; color:#9b59b6; font-size:1.6em; letter-spacing:4px; margin-bottom:12px; }
+.closing-lines { color:#d2b4de; font-size:.88em; line-height:2; margin-bottom:14px; }
+.closing-next  { font-family:'Bangers',sans-serif; color:#ffd700; font-size:1.1em; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="comic-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-series">✦ VẬT LÝ THCS TOÀN TẬP — PHẦN V ✦</div>
+  <div class="cover-title">ÂM<br>THANH</div>
+  <div class="cover-sub">Trong không gian, không ai nghe thấy tiếng la hét của bạn</div>
+</div>
+
+<!-- HOOK: Không gian -->
+<div class="ch-div">🚀 KHÔNG GIAN — KHÔNG CÓ ÂM THANH 🚀</div>
+<div class="row">
+  <div class="panel bg-dark">
+    <div class="pi pi-tall">
+      <div class="nar nar-dark">Phim Hollywood vs Vật lý</div>
+      <div class="scene scene-col" style="gap:12px;">
+        <span class="fig-xl">💥🚀</span>
+        <div style="color:#d2b4de; font-size:.85em; text-align:center; line-height:1.7;">
+          Trong phim ngoài không gian:<br>
+          vụ nổ rầm trời, tiếng súng vang vang...
+        </div>
+        <div class="sfx sfx-r sfx-sm" style="text-align:center;">SAI VẬT LÝ!</div>
+        <div style="color:#f1948a; font-size:.83em; text-align:center; line-height:1.7; font-weight:700;">
+          Chân không: không có phân tử.<br>
+          Không có phân tử: không có âm thanh.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">Âm thanh là gì?</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center;">
+          <span class="fig-lg">🔔</span>
+          <div style="font-size:.78em; margin-top:6px; color:#5d4037; line-height:1.6;">Chuông rung<br>→ nén–giãn không khí<br>→ sóng truyền ra</div>
+        </div>
+        <div style="font-size:2em; color:#aaa;">→</div>
+        <div style="text-align:center;">
+          <!-- wave visual -->
+          <div class="wave-row" style="margin-bottom:8px;">
+            <div class="wave-bar" style="height:8px;"></div>
+            <div class="wave-bar" style="height:20px;"></div>
+            <div class="wave-bar" style="height:34px;"></div>
+            <div class="wave-bar" style="height:20px;"></div>
+            <div class="wave-bar" style="height:8px;"></div>
+            <div class="wave-bar" style="height:20px;"></div>
+            <div class="wave-bar" style="height:34px;"></div>
+            <div class="wave-bar" style="height:20px;"></div>
+            <div class="wave-bar" style="height:8px;"></div>
+          </div>
+          <div style="font-size:.78em; color:#6c3483; font-weight:700;">Sóng nén – giãn<br>trong không khí</div>
+        </div>
+        <div style="font-size:2em; color:#aaa;">→</div>
+        <div style="text-align:center;">
+          <span class="fig-lg">👂</span>
+          <div style="font-size:.78em; margin-top:6px; color:#5d4037; line-height:1.6;">Màng nhĩ<br>dao động<br>→ nghe thấy</div>
+        </div>
+      </div>
+      <div class="cap">Âm thanh là sóng cơ học — <strong>phải có môi trường vật chất</strong> để truyền.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TỐC ĐỘ ÂM -->
+<div class="row">
+  <div class="panel panel-3x">
+    <div class="pi pi-short">
+      <div class="nar nar-blue">Tốc độ âm thanh trong các môi trường</div>
+      <div class="scene scene-col" style="gap:6px;">
+        <div class="speed-item">
+          <div style="width:80px; text-align:right; font-weight:700;">Không khí</div>
+          <div class="speed-bar-wrap">
+            <div class="speed-bar-fill" style="width:7%; background:#9b59b6;">340</div>
+          </div>
+          <div style="width:70px; color:#6c3483; font-weight:700;">340 m/s</div>
+        </div>
+        <div class="speed-item">
+          <div style="width:80px; text-align:right; font-weight:700;">Nước</div>
+          <div class="speed-bar-wrap">
+            <div class="speed-bar-fill" style="width:30%; background:#2980b9;">1.500</div>
+          </div>
+          <div style="width:70px; color:#1a5276; font-weight:700;">1.500 m/s</div>
+        </div>
+        <div class="speed-item">
+          <div style="width:80px; text-align:right; font-weight:700;">Thép</div>
+          <div class="speed-bar-wrap">
+            <div class="speed-bar-fill" style="width:100%; background:#e74c3c;">5.000</div>
+          </div>
+          <div style="width:70px; color:#922b21; font-weight:700;">5.000 m/s</div>
+        </div>
+      </div>
+      <div class="cap">Chất rắn/lỏng dẫn âm tốt hơn khí vì phân tử gần nhau hơn, truyền dao động nhanh hơn.</div>
+    </div>
+  </div>
+  <div class="panel bg-blue">
+    <div class="pi pi-short">
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:2em; text-align:center;">🌊👂</div>
+        <div style="font-size:.8em; text-align:center; color:#1a5276; line-height:1.7; font-style:italic;">
+          Người Mỹ bản địa<br>nghe tiếng vó ngựa<br>bằng cách áp tai xuống đất<br>— thép, đất dẫn âm nhanh hơn khí.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOPPLER -->
+<div class="ch-div">🎺 CHRISTIAN DOPPLER — 1803–1853 🎺</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi pi-tall">
+      <div class="nar">1842 — Đề xuất lý thuyết</div>
+      <div class="scene scene-col" style="gap:10px;">
+        <span class="fig-lg">🎵📡</span>
+        <div style="font-size:.83em; text-align:center; color:#5d4037; line-height:1.7;">
+          Nguồn âm đang tiến đến<br>→ sóng bị nén → âm <strong>cao hơn</strong>.<br><br>
+          Nguồn âm đang ra xa<br>→ sóng bị kéo dài → âm <strong>thấp hơn.</strong>
+        </div>
+        <div style="font-size:1.5em; text-align:center;">
+          🚗→→ <span style="color:#2980b9; font-weight:900; font-size:.9em;">BÍIIÍ</span> → 👂<br>
+          👂 ← <span style="color:#9b59b6; font-weight:900; font-size:.9em;">bíuuuu</span> ←← 🚗
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x bg-purple">
+    <div class="pi pi-tall">
+      <div class="nar nar-purple">1845 — Thí nghiệm kỳ lạ nhất lịch sử âm học</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">🚂🎺🎺🎺</span>
+          <div class="bubble" style="font-size:.78em; margin-top:12px;">"Dàn kèn đồng — lên tàu đi!"</div>
+          <div style="font-size:.75em; margin-top:8px; color:#6c3483; line-height:1.6;">
+            Kèn ngồi trên xe lửa chạy qua.<br>
+            Nhạc sĩ tai hoàn hảo đứng bên đường<br>ghi nhận âm thay đổi.
+          </div>
+        </div>
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">🎵✅</span>
+          <div style="font-size:.82em; margin-top:8px; color:#145a32; font-weight:700; line-height:1.6;">
+            Thí nghiệm<br>kỳ lạ nhất lịch sử.<br>Và nó hoạt động.
+          </div>
+        </div>
+      </div>
+      <div class="cap">Hiệu ứng Doppler: siêu âm tim, radar cảnh sát bắn tốc độ, đo vận tốc thiên hà bay xa Trái Đất.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TẦN SỐ & CƯỜNG ĐỘ -->
+<div class="ch-div">🔊 TẦN SỐ, ĐỘ TO, VÀ ỐC TAI 🔊</div>
+<div class="row">
+  <div class="panel bg-blue">
+    <div class="pi">
+      <div class="nar nar-blue">Tần số — Hz</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:2em; text-align:center;">🎵🎶</div>
+        <div style="font-size:.82em; color:#1a5276; text-align:center; line-height:1.8;">
+          Tần số cao → âm cao (tiếng sáo)<br>
+          Tần số thấp → âm trầm (tiếng trống)<br><br>
+          Người nghe được: <strong>20–20.000 Hz</strong><br>
+          Dơi: ~100.000 Hz<br>
+          Voi: hạ âm ~14 Hz (người không nghe)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel bg-red">
+    <div class="pi">
+      <div class="nar nar-red">Cường độ âm — dB (thang logarithm)</div>
+      <div class="scene scene-col" style="gap:6px;">
+        <div class="db-row">
+          <div style="width:70px; font-size:.75em; text-align:right;">Thì thầm</div>
+          <div class="db-bar" style="width:20%; background:#82e0aa; color:#145a32;">30 dB</div>
+        </div>
+        <div class="db-row">
+          <div style="width:70px; font-size:.75em; text-align:right;">Nói chuyện</div>
+          <div class="db-bar" style="width:40%; background:#f9e79f; color:#7d6608;">60 dB</div>
+        </div>
+        <div class="db-row">
+          <div style="width:70px; font-size:.75em; text-align:right;">Nhà máy</div>
+          <div class="db-bar" style="width:65%; background:#f0b27a; color:#784212;">85 dB ⚠️</div>
+        </div>
+        <div class="db-row">
+          <div style="width:70px; font-size:.75em; text-align:right;">Nhạc rock</div>
+          <div class="db-bar" style="width:80%; background:#e74c3c;">110 dB 🔴</div>
+        </div>
+        <div style="font-size:.76em; color:#7b241c; font-style:italic; line-height:1.5;">
+          ⚠️ 85 dB tiếp xúc lâu → hại tế bào lông ốc tai<br>
+          <strong>Không hồi phục — tế bào lông người không tái sinh.</strong><br>
+          (Cá và chim thì tái sinh được.)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIẾNG VANG + CARNEGIE HALL -->
+<div class="ch-div">🎭 TIẾNG VANG & CARNEGIE HALL 🎭</div>
+<div class="row">
+  <div class="panel bg-yellow">
+    <div class="pi">
+      <div class="nar">Tiếng vang — echo</div>
+      <div class="scene scene-col" style="gap:8px;">
+        <div style="font-size:2.5em; text-align:center;">📣〰〰🧱〰〰👂</div>
+        <div class="formula formula-blue" style="font-size:.9em;">Âm phản xạ về tai sau ≥ 1/15 giây</div>
+        <div style="font-size:.82em; text-align:center; color:#555; line-height:1.7;">
+          340 m/s × (1/15 s) ÷ 2 = <strong>~11m</strong><br>
+          → Khoảng cách đến vật phản xạ phải &gt;11m<br>
+          mới nghe được tiếng vang riêng biệt.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-2x bg-purple">
+    <div class="pi">
+      <div class="nar nar-purple">Carnegie Hall, New York — 1891</div>
+      <div class="scene" style="gap:16px; align-items:center;">
+        <div style="text-align:center; flex:1;">
+          <span class="fig-lg">🏛️🎻</span>
+          <div style="font-size:.82em; margin-top:8px; color:#6c3483; line-height:1.7; font-weight:700;">
+            Âm học<br>gần như hoàn hảo.<br>
+            Được xếp hạng<br>tốt nhất thế giới.
+          </div>
+        </div>
+        <div style="flex:1; text-align:center;">
+          <span class="fig-lg">🏗️📐</span>
+          <div class="bubble" style="font-size:.78em; margin-top:12px; background:#fdedec; border-color:#e74c3c; color:#7b241c;">"Ai thiết kế? Giáo sư âm học nào?"</div>
+          <div style="font-size:.8em; margin-top:8px; color:#6c3483; line-height:1.6; font-weight:700;">
+            William Burnet Tuthill —<br>
+            kiến trúc sư <em>nghiệp dư.</em><br>
+            Không học âm học bao giờ.<br>
+            Tự đi đo nhiều nhà hát châu Âu,<br>rồi tự thiết kế.
+          </div>
+        </div>
+      </div>
+      <div class="cap">Phần mềm mô phỏng âm học hiện đại vẫn không làm được tốt hơn.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-title">— HẾT PHẦN V —</div>
+  <div class="closing-lines">
+    Chân không không có âm thanh — cảnh nổ rầm trong phim vũ trụ là sai vật lý.<br>
+    Doppler thuê dàn kèn ngồi trên xe lửa để kiểm chứng lý thuyết — thí nghiệm kỳ lạ nhất lịch sử âm học, và nó hoạt động.<br>
+    85 dB tiếp xúc lâu phá hủy tế bào lông ốc tai không hồi phục — cá và chim tái sinh được, người thì không.<br>
+    Carnegie Hall được thiết kế bởi kiến trúc sư nghiệp dư tự học — vẫn là chuẩn mực âm học 130 năm sau.
+  </div>
+  <div class="closing-next">➤ PHẦN VI: ÁNH SÁNG & QUANG HỌC ➤</div>
+</div>
+
+</div>
+</body>
+</html>
